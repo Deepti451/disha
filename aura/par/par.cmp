@@ -1,0 +1,23 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="Name" type="String" default=""/>
+   	<aura:attribute name="Company" type="String" default=""/>
+    <aura:attribute name="Email" type="String" default=""/>
+    <aura:attribute name="Phone" type="Integer" default="+91"/>
+    <div class="slds-grid slds-wrap">
+    	<div class="slds-col slds-size_12-of-12">
+        	<lightning:input type="text" name="name" label="Name" value="{!v.Name}"/>
+        </div>
+    	<div class="slds-col slds-size_12-of-12">
+    		<lightning:input type="text" name="company" label= "Company" value="{!v.Company}"/>
+	    </div>
+        <div class="slds-col slds-size_12-of-12">
+            <lightning:input type="text" name="email" label="Email" value="{!v.Email}"/>
+        </div>
+        <div class="slds-col slds-size_12-of-12">
+            <lightning:input type="number" name="phone" label="Phone" value="{!v.Phone}"/>
+        </div>
+        	
+        </div>
+        <lightning:button name="save" variant="brand" label="Submit" onclick="{!c.submitForm}"/>
+        <c:bcha/>
+</aura:component>

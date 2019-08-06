@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>Use to store the confidence level of the user and the selected month.</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>delphiDemo__Confidence_Level_Five__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Confidence Level Five</label>
+        <length>10</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>delphiDemo__Confidence_Level_Four__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Confidence Level Four</label>
+        <length>10</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>delphiDemo__Confidence_Level_Three__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Confidence Level Three</label>
+        <length>10</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>delphiDemo__Confidence_Level_Two__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Confidence Level Two</label>
+        <length>10</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>delphiDemo__Confidence_Level__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Use to store the selected confidence level</description>
+        <externalId>false</externalId>
+        <label>Confidence Level</label>
+        <length>10</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>delphiDemo__Selected_Month__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Use to store the selected month</description>
+        <externalId>false</externalId>
+        <label>Selected Month</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Confidence level and month</label>
+    <visibility>Public</visibility>
+</CustomObject>

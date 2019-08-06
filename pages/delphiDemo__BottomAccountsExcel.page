@@ -1,0 +1,24 @@
+<apex:page controller="delphiDemo.DelphiGraphs" contentType="application/vnd.ms-excel#Bottom_10_Accounts({!times}).xls" readOnly="true">     
+    
+    <table border="1" >         
+             <tr style="font-weight:bold;  ">
+                 <td>
+                  <font color="Blue" >Account Name</font>
+                 </td>
+                 <td>
+                   <font color="Blue" >  Expected Revenue </font>
+                 </td>                 
+             </tr>
+             <apex:repeat value="{!wrapperlistforbottomamount}" var="acct" >
+             <tr>
+                 <td >
+                    <apex:outputfield value="{!acct.acc.name}" />
+                 </td>
+            
+                 <td >
+                     <apex:outputtext value="{!acct.eamount}" />
+                 </td>
+             </tr> 
+         </apex:repeat>
+     </table>
+</apex:page>

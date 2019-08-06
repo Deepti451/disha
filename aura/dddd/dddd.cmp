@@ -1,0 +1,21 @@
+<aura:component controller="kkkk" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	
+
+     
+    <aura:attribute type="ContentDocument[]" name="accList"/>
+    <aura:attribute name="mycolumns" type="List"/>
+    <aura:attribute name="istrue" type="boolean"/>
+     <lightning:button variant="base" label="Base" title="History action" onclick="{! c.handleClick }"/>
+ <aura:handler name="init" value="{!this}" action="{!c.fetchAcc}"/>
+   
+     <aura:if isTrue="{!v.istrue}">
+    <lightning:datatable data="{! v.accList }"
+                         columns="{! v.mycolumns }"
+                         keyField="id"
+                         hideCheckboxColumn="true"/>
+    </aura:if>
+    
+   
+
+     
+</aura:component>

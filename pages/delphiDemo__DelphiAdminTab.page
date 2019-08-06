@@ -1,0 +1,760 @@
+<apex:page controller="delphiDemo.DelphiAdminTab" sidebar="false" showHeader="true">
+<apex:includeScript value="/soap/ajax/32.0/connection.js"/>
+<apex:includeScript value="/soap/ajax/32.0/apex.js"/>
+<style>
+.messageText {
+    margin-left: 8px;
+    font-size: small;
+}
+.alert-success {
+    color: rgb(60, 118, 61);
+    background-color: rgb(223, 240, 216);
+    border-color: rgb(214, 233, 198);
+    font-size: small;
+}
+.innerContainer {
+    font-family: "Open Sans";
+    margin: 0 auto;
+    background: #fff;
+    margin-top: -33px;
+}
+.labell {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: initial;
+}
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    font-size: small;
+}
+
+.expiry-frm{
+        background: #6aafac;
+        width: 1286px;
+        height: 545px;
+        margin-top: 49px;
+        margin-left: 45px;
+        display:none;
+        
+    }
+   .home-btn{
+        text-decoration: none !important;
+        background: #1c8adb;
+        color: #fff !important;
+        display: block;
+        width: 3%;
+        padding: 9px 9px;
+        font-weight: 600;
+        margin-left: 1%;
+        border-radius: 38px;
+        box-shadow: #c1c1c1 4px 3px;
+        position: absolute;
+        margin-top: 18px;
+}
+.home-btn:hover{
+    background: #1797c0;
+}
+
+.homebutton{
+    float: right;
+    margin-right: 35px;
+    z-index: 9999;
+    position: fixed;
+    font-size: 11px;
+    font-weight: 400;
+    left: 5%;
+    top: 36px;
+    padding: 0
+    }
+    
+    .step-title {
+    background: #f9da60 none repeat scroll 0 0;
+    border-radius: 100px;
+    color: #ffffff;
+    display: block;
+    font-size: 17px;
+    font-weight: 600;
+    height: 69px;
+    left: -6%;
+    padding-top: 9%;
+    position: absolute;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    top: -42px;
+    width: 72px;
+    line-height: 1;
+}
+
+ .popupBackground {
+        /* Background color */
+        background-color:black;
+        opacity: 0.20;
+        filter: alpha(opacity = 20);
+    
+        /* Dimensions */
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 998;
+        position: absolute;
+        
+        /* Mouse */
+        cursor:wait;
+    }
+ 
+    /* This is for the message DIV */
+    .PopupPanel {
+        /* Background color */
+        border: solid 2px blue;
+        background-color: white;
+ 
+        /* Dimensions */
+        left: 50%;
+        width: 200px;
+        margin-left: -100px;
+        top: 50%;
+        height: 50px;
+        margin-top: -25px;
+        z-index: 999;
+        position: fixed;
+        
+        /* Mouse */
+        cursor:pointer;
+    }
+.popup {
+
+    z-index: 99999;
+    padding: 10px;
+    position: absolute;
+    width: Auto;
+    top: 50%;
+    opacity: 1;
+    left: 48%;
+    right: 48%;
+    width: 192px;
+    display: table-cell;
+    vertical-align: middle;
+    color: #000;
+    font-size: 18px;
+    }
+ 
+.popupBg {
+    background-color: #e8e8e8;
+    opacity: 0.8;
+    filter: alpha(opacity = 10);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+    overflow: hidden;
+}
+
+.homebutton{
+    float: right;
+    margin-right: 35px;
+    z-index: 9999;
+    position: fixed;
+    font-size: 11px;
+    font-weight: 400;
+    padding: 0
+    }
+</style>
+
+<style>
+.punch-line{
+    font-size: 20px;
+    
+    font-weight: lighter;
+    font-family: "open sans";
+    margin-bottom: 2%;
+    margin-top: 3%;
+  }
+.help-text{
+    display: inline-block;
+    padding: 5px;
+    border-radius: 200px;
+    background: #ffffff;
+    color: #F44336;
+    font-size: 12px;
+    height:18px;
+    width: 18px;
+    line-height: 1;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .table-heading{
+    font-size: 16px;
+    font-weight: lighter;
+    display: inline-block;
+    padding: 2%;
+    color: #fff;
+    font-family: "Open Sans";
+  }
+  .row .action-button, .row .action-button-cancel{
+    background: #00BCD4;
+    min-width: 94px;
+    border: none;
+    padding: 1%;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: "Open Sans";
+  }
+  .row .action-button-cancel{
+    background: #909090;
+    margin-left: 10px;
+  }
+  
+  #mask {
+    display: none;
+    background: rgba(0, 0, 0, 0.5) none repeat scroll 0 0;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+    z-index: 999;
+}
+/* You can customize to your needs  */
+.login-popup {
+    display: none;
+    background: #fff;
+    padding: 28px;
+    float: left;
+    font-size: 1.2em;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 99999;
+    border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    box-shadow: 0px 2px 9px #333;
+    min-width: 400px;
+}
+.btn_close {
+    background: #ffffff none repeat scroll 0 0;
+    border-radius: 100px;
+    color: #333333;
+    float: right;
+    font-family: Verdana;
+    font-size: 14px;
+    font-weight: 600;
+    margin: -26px -28px 0 0;
+    padding: 5px 9px;
+    text-decoration: none;
+}
+fieldset {
+    border: none;
+}
+.settings .textbox label {
+    display: block;
+    padding-bottom: 7px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 2;
+    color:#555555;
+}
+.settings .textbox p {
+    font-size: 14px;
+    color: #555555;
+    margin: 5px 0;
+}
+.settings .textbox input {
+    background: #666666;
+    border-bottom: 1px solid #333;
+    border-left: 1px solid #000;
+    border-right: 1px solid #333;
+    border-top: 1px solid #000;
+    color: #fff;
+    border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    padding: 6px 6px 4px;
+    width: 200px;
+}
+.button {
+    margin-top: 10px;
+    font-size: 12px;
+    width: 100%;
+    background: #888888 none repeat scroll 0 0;
+    border-radius: 5px;
+    color: #ffffff;
+    display: inline-block;
+    margin: 0 auto;
+    padding: 5px 15px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.button:hover {
+    background: #999;
+}
+.settings p::after {
+    color: #dd0000;
+    content: "X";
+    cursor: pointer;
+    float: right;
+}
+.selectListClass{
+    font-size: 16px;
+    padding: 9px;
+    border-radius: 5px;
+    display: block;
+    width: 100%;
+}
+.config-button{
+    background: #29abe2 none repeat scroll 0 0;
+    border: medium none;
+    font-family: "Open Sans";
+    font-size: 21px;
+    font-weight: 200;
+    text-transform: uppercase;
+    transition: all 0.5s ease 0s;
+    color: #fff;
+    padding: 10px 20px!important;
+}
+.config-button:hover {
+    color: #fff;
+    background-color: #286090;
+    border-color: #204d74;
+    text-decoration: none;
+}
+
+.config-button:focus {
+    color: #fff;
+    background-color: #286090;
+    border-color: #204d74;
+    text-decoration: none;
+}
+.button:hover {
+    background: #286090;
+    color: #fff;
+}
+
+
+
+#loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+  background: rgba(0,0,0,0.5);
+  
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Add animation to "page content" */
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s
+}
+
+@-webkit-keyframes animatebottom {
+  from { bottom:-100px; opacity:0 } 
+  to { bottom:0px; opacity:1 }
+}
+
+@keyframes animatebottom { 
+  from{ bottom:-100px; opacity:0 } 
+  to{ bottom:0; opacity:1 }
+}
+
+#preloader {
+    background: #000;
+    position:fixed;
+    z-index: 9999;
+    left:0px; 
+    top:0px; 
+    width:100%; 
+    height:100%; 
+    text-align:center;
+    color:#fff;
+}
+#preloader div {
+    width:400px;
+    margin:auto;
+    height: 3px;
+    text-align:center;
+    border: 4px solid #111;
+    overflow:hidden;
+}
+#preloader_image {
+    position: relative;
+    left:0px;
+    top:-10px;
+}
+
+ .popupBackground {
+        /* Background color */
+        background-color:black;
+        opacity: 0.20;
+        filter: alpha(opacity = 20);
+    
+        /* Dimensions */
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 998;
+        position: absolute;
+        
+        /* Mouse */
+        cursor:wait;
+    }
+ 
+    /* This is for the message DIV */
+    .PopupPanel {
+        /* Background color */
+        border: solid 2px blue;
+        background-color: white;
+ 
+        /* Dimensions */
+        left: 50%;
+        width: 200px;
+        margin-left: -100px;
+        top: 50%;
+        height: 50px;
+        margin-top: -25px;
+        z-index: 999;
+        position: fixed;
+        
+        /* Mouse */
+        cursor:pointer;
+    }
+.popup {
+
+   z-index: 99999;
+    padding: 10px;
+    position: fixed;
+    width: Auto;
+    top: 40%;
+    opacity: 1;
+    left: 40%;
+   
+    width: 293px;
+    display: table-cell;
+    vertical-align: middle;
+    color: #000;
+    font-size: 18px;
+    text-align: center;
+    }
+ 
+.popupBg {
+    background-color: #e8e8e8;
+    opacity: 0.8;
+    filter: alpha(opacity = 10);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+    overflow: hidden;
+     height: 100%;
+    min-height: 1200px;
+}
+
+</style>
+ <apex:form id="theform">
+ <apex:actionFunction action="{!backtohome}" name="backtohome" />
+<apex:stylesheet value="{!URLFOR($Resource.delphiDemo__css_folder,'css/custom.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.delphiDemo__css_folder,'css/bootstrap.css')}"/>
+
+  
+        <apex:includeScript value="{!$Resource.delphiDemo__Jquery}"  />
+       
+         <apex:outputPanel styleClass="popupBg" layout="block" rendered="{!batchExecution}">
+            <apex:outputPanel layout="block" styleClass="popup" rendered="{!batchExecution}">
+               <apex:image url="{!$Resource.delphiDemo__loadingimg}" width="40" style="margin-left: 20px;"/>
+                <div style="width:auto;">
+            <h1 style="font-size: 14px;width: 332px;float: left;text-align: center;"> Please wait while Delphi is processing your data...</h1>
+            
+        </div>
+               
+            </apex:outputPanel> 
+        </apex:outputPanel>   
+        
+        
+    
+    
+        <apex:outputpanel rendered="{!batchExecution}">
+        <apex:actionPoller action="{!updateDates}"  interval="5" reRender="theform"   enabled="{!IF(altCheck = true,false,true)}"/>
+    </apex:outputpanel>
+    <div class = "messageText">
+       <apex:pageMessages />
+    </div>
+       
+   <div class="container-fluid innerContainerBg" style="margin-top:4%"> 
+     
+    <div class="container innerContainer">
+    <apex:outputpanel rendered="{!altCheck }">
+         <script>
+        
+         setTimeout(function() {$("#abcd").hide();}, 5000);
+
+         </script>
+        <div id="abcd" class="alert alert-success" style="text-align:left;color:#fff;background-color:#159e18;">
+              <strong>Success.</strong> You can see the Delphi Graphs now.
+        </div>
+    </apex:outputpanel>
+        <div class="col-md-3 sm-logo"><apex:image url="{!URLFOR($Resource.delphiDemo__Image_folder, 'delphi__Image_folder/images/delphi-logo.png')}" styleclass="img-responsive" alt="Delphi" /></div>
+        <div class="col-md-9 right-colmun-text">
+            <h1>Accurate Sales Forecasting &amp; Predictive Analytics</h1>
+            <h4>Delphi intuitively uses complex simulations to analyze and predict when an opportunity in your pipeline will convert into an order, 
+            to forecast value of your Opportunities, Accounts and Sales Reps. 
+            You can choose a confidence level for a specific time period to forecast the expected closure time and expected revenue.</h4>
+        </div>
+        <!--<div class="homebutton">
+                <a href="#" onclick="backtohome();"><apex:image url="{!URLFOR($Resource.Home)}" title="Back to Home" style="width:30px;"/> </a>              
+            </div>  -->
+        <div class="clear-bottom"></div>
+         <h4>Delphi empowers you to decide how you want your salesforce organization data to be analyzed.<br/>
+<strong>Machine Learning </strong>– User just tells Delphi the time period for which their organization data needs to be analyzed for.<br/>      
+<strong>User defined</strong> – User manually inputs the minimum and maximum time &amp; probability for each stage in which an opportunity should be converted.
+
+</h4>
+       
+        <div style="display: inline-block;">
+  <h1 style="
+    margin-top: 3%;
+">Machine Learning</h1>
+    <div class="steps" style="display: inline-block;">
+                <div class="col-md-2 how-to-config-box">
+                     <h3 class="how-to-config-title">How to Configure</h3>
+                     <p class="how-to-config-text">You can configure your application for Machine Learning in just 1 simple step</p>
+                </div>
+                <div class="col-md-6 step-container">
+                    
+                    <p class="step-text" style="
+    margin-top: 7%;
+">Choose the time period for which you want your salesforce organization data to be analyzed for and let Delphi do all the heavy lifting for you.</p>
+                </div>
+                <div class="col-md-2" style="
+    margin-top: 8%;
+    margin-left: 4%;
+">
+  <div class="row clear-bottom buttonnew">    
+               <a class="config-button" href="#login-box">Configure</a> 
+         </div>
+            </div>    
+        </div>
+</div>
+         <div class="alert alert-danger">
+              <strong>Note:</strong> Machine learning works only if the number of Closed Won Opportunities in your Salesforce Org. is greater than 200.
+        </div>
+         
+          <div style="display: inline-block;">
+  <h1 style="margin-top: 3%;">User defined</h1>
+  <div class="steps" style="display: inline-block;">
+                <div class="col-md-2 how-to-config-box">
+                     <h3 class="how-to-config-title">How to Configure</h3>
+                     <p class="how-to-config-text">You can configure your application in just 2 simple steps</p>
+                </div>
+                <div class="col-md-3 step-container">
+                    <div class="step-title">Step 1</div>
+                    <p class="step-text">For every stage provide the expected minimum and maximum opportunity conversion time.</p>
+                </div>
+                <div class="col-md-3 step-container">
+                    <div class="step-title">Step 2</div>
+                     <p class="step-text">For every stage provide the expected minimum and maximum probability of opportunity conversion.</p>
+                </div>
+                <div class="col-md-2" style="
+    margin-top: 7%;
+    margin-left: 3%;
+">
+                
+  <div class="row clear-bottom buttonnew">                 
+             <apex:commandButton value="Configure" styleClass="btn-primary btn-lg btn" action="{!tgetUser}"/>         
+         </div>
+         </div>
+        </div>
+  </div>
+        
+        <div class="alert alert-danger">
+              <strong>Note:</strong> Delphi automatically pulls the opportunity stages as defined in your salesforce org. You cannot <strong>add</strong> or <strong>delete</strong> any stage on the Delphi configuration page.
+        </div>
+          
+    </div>
+
+<div id="login-box" class="login-popup">
+<a href="#" class="close btn_close">X</a>
+        <p class="punch-line" style="width: 407px;">
+            Configure the time period for which the data needs to analyzed.
+            Machine learning works only if the number of Closed Won Opportunities in your Salesforce Org. is greater than 200.
+        </p>
+  <form method="post" class="settings" action="#">
+        <fieldset class="textbox">
+         <label class="labell">
+         Select Time Period
+        </label>
+       <apex:selectList styleClass="selectListClass" value="{!selectedVal}" size="1"> 
+    <apex:selectOptions value="{!backWardList}" /> 
+</apex:selectList>
+
+<apex:commandButton style="margin-top: 20px;" action="{!doCheck}" styleClass="submit button" value="Submit" id="theButton" />
+        <label>
+     
+       
+        </label>
+        
+       
+            
+        </fieldset>
+  </form>
+</div>  
+</div>
+
+<script>
+
+// window.onload = hide_preloader;
+var rotate = 1;
+
+function hide_preloader() {
+    // To stop the preloader 
+    rotate = 0; 
+    // To apply Fade Out Effect to the Preloader 
+    $("#preloader").fadeOut(1000);
+    }
+    
+function myFunction() {
+    myVar = setTimeout(showPage, 2000);
+ //   $('#successMessage').hide();
+}
+
+function showPage() {
+  var check ='{!batchExecution}';
+  
+  if(check == 'true')
+  {
+//  document.getElementById("loader").style.display = "none";
+ //   $('#successMessage').show();
+  }
+  else
+  {
+    myVar = setTimeout(showPage, 2000);
+  }
+  
+}
+
+$(document).ready(function(){
+
+    // calculate height
+   
+
+});
+
+$(document).ready(function(){
+
+// loading animation using script 
+
+   
+
+
+});
+
+
+  $(document).ready(function() {
+$('a.config-button').click(function() {
+    
+            //Getting the variable's value from a link 
+    var loginBox = $(this).attr('href');
+
+    //Fade in the Popup
+    $(loginBox).fadeIn(300);
+    
+    //Set the center alignment padding + border see css style
+    var popMargTop = ($(loginBox).height() + 24) / 2; 
+    var popMargLeft = ($(loginBox).width() + 24) / 2; 
+    
+    $(loginBox).css({ 
+        'margin-top' : -popMargTop,
+        'margin-left' : -popMargLeft
+    });
+    
+    // Add the mask to body
+    $('body').append('<div id="mask"></div>');
+    $('#mask').fadeIn(300);
+    
+    return false;
+});
+
+// When clicking on the button close or the mask layer the popup closed
+$('a.close, #mask').live('click', function() { 
+  $('#mask , .login-popup').fadeOut(300 , function() {
+    $('#mask').remove();  
+}); 
+return false;
+});
+});
+
+function test()
+{
+        //Getting the variable's value from a link 
+    var loginBox = $(this).attr('href');
+
+    //Fade in the Popup
+    $(loginBox).fadeIn(300);
+    
+    //Set the center alignment padding + border see css style
+    var popMargTop = ($(loginBox).height() + 24) / 2; 
+    var popMargLeft = ($(loginBox).width() + 24) / 2; 
+    
+    $(loginBox).css({ 
+        'margin-top' : -popMargTop,
+        'margin-left' : -popMargLeft
+    });
+    
+    // Add the mask to body
+    $('body').append('<div id="mask"></div>');
+    $('#mask').fadeIn(300);
+    
+    return false;
+
+}
+
+    </script>
+    
+   
+ </apex:form> 
+ 
+<div id="expiryform" class="expiry-frm">
+    <a href="/home/home.jsp" class="home-btn"><img src="{!$Resource.home_icon}" style="width: 30px; height: 28px; margin-left: 5px;"/></a>
+    <h3 style="color: red; font-size: 29px; margin-left: 141px;">Your 30-day trial has expired. Please contact us for package renewal.</h3>
+    <img src="{!$Resource.caution}" style="width:293px; margin-left:500px; margin-top:90px;"/>
+</div>
+    
+</apex:page>

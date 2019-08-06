@@ -1,0 +1,916 @@
+<apex:page id="mainpage" controller="delphiDemo.DelphiTableController" doctype="html-5.0" sidebar="false" standardStylesheets="false"  cache="true" showHeader="true" tabStyle="Delphi_Configuration__tab">
+<style>
+.messageCell {
+    vertical-align: middle;
+    font-size: small;
+}
+.label1 {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-size: small;
+    float: right;
+    font-weight: 100;
+
+}
+.label2 {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-size: small;
+    float: right;
+    font-weight: 100;
+    margin-right: 441px;
+
+}
+.alert-success {
+    color: rgb(60, 118, 61);
+    background-color: rgb(223, 240, 216);
+    border-color: rgb(214, 233, 198);
+    font-size: small;
+}
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    font-size: small;
+    margin-bottom: 10px;
+}
+.table-striped{
+    background-color: #f9f9f9;
+    font-size: medium;
+}
+    /* This is for the full screen DIV */
+    .popupBackground {
+        /* Background color */
+        background-color:black;
+        opacity: 0.20;
+        filter: alpha(opacity = 20);
+    
+        /* Dimensions */
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 998;
+        position: absolute;
+        
+        /* Mouse */
+        cursor:wait;
+    }
+ 
+    /* This is for the message DIV */
+    .PopupPanel {
+        /* Background color */
+        border: solid 2px blue;
+        background-color: white;
+ 
+        /* Dimensions */
+        left: 50%;
+        width: 200px;
+        margin-left: -100px;
+        top: 50%;
+        height: 50px;
+        margin-top: -25px;
+        z-index: 999;
+        position: fixed;
+        
+        /* Mouse */
+        cursor:pointer;
+    }
+.popup {
+
+   z-index: 99999;
+    padding: 10px;
+    position: fixed;
+    width: Auto;
+    top: 40%;
+    opacity: 1;
+    left: 40%;
+   
+    width: 293px;
+    display: table-cell;
+    vertical-align: middle;
+    color: #000;
+    font-size: 18px;
+    text-align: center;
+    }
+ 
+.popupBg {
+    background-color: #e8e8e8;
+    opacity: 0.8;
+    filter: alpha(opacity = 10);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+    overflow: hidden;
+}
+
+.homebutton{
+    
+    margin-right: 35px;
+    z-index: 9999;
+    position: fixed;
+    font-size: 11px;
+    font-weight: 400;
+    padding: 0;
+    left: 5%;
+    top: 36px;
+    }
+</style>
+
+<style>
+.punch-line{
+    font-size: 20px;
+    
+    font-weight: lighter;
+    font-family: "open sans";
+    margin-bottom: 2%;
+    margin-top: 3%;
+  }
+.help-text{
+    display: inline-block;
+    padding: 5px;
+    border-radius: 200px;
+    background: #ffffff;
+    color: #F44336;
+    font-size: 12px;
+    height:18px;
+    width: 18px;
+    line-height: 1;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .table-heading{
+    font-size: 16px;
+    font-weight: lighter;
+    display: inline-block;
+    padding: 2%;
+    color: #fff;
+    font-family: "Open Sans";
+  }
+  .row .action-button, .row .action-button-cancel{
+    background: #00BCD4;
+    min-width: 94px;
+    border: none;
+    padding: 1%;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: "Open Sans";
+  }
+  .row .action-button-cancel{
+    background: #909090;
+    margin-left: 10px;
+  }
+  
+  #mask {
+    display: none;
+    background: rgba(0, 0, 0, 0.5) none repeat scroll 0 0;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+    z-index: 999;
+}
+/* You can customize to your needs  */
+.login-popup {
+    display: none;
+    background: #fff;
+    padding: 28px;
+    float: left;
+    font-size: 1.2em;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 99999;
+    border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    box-shadow: 0px 2px 9px #333;
+    min-width: 400px;
+}
+.btn_close {
+    background: #ffffff none repeat scroll 0 0;
+    border-radius: 100px;
+    color: #333333;
+    float: right;
+    font-family: Verdana;
+    font-size: 14px;
+    font-weight: 600;
+    margin: -26px -28px 0 0;
+    padding: 5px 9px;
+    text-decoration: none;
+}
+fieldset {
+    border: none;
+}
+.settings .textbox label {
+    display: block;
+    padding-bottom: 7px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 2;
+    color:#555555;
+}
+.settings .textbox p {
+    font-size: 14px;
+    color: #555555;
+    margin: 5px 0;
+}
+.settings .textbox input {
+    background: #666666;
+    border-bottom: 1px solid #333;
+    border-left: 1px solid #000;
+    border-right: 1px solid #333;
+    border-top: 1px solid #000;
+    color: #fff;
+    border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    padding: 6px 6px 4px;
+    width: 200px;
+}
+.button {
+    margin-top: 10px;
+    font-size: 12px;
+    width: 100%;
+    background: #888888 none repeat scroll 0 0;
+    border-radius: 5px;
+    color: #ffffff;
+    display: inline-block;
+    margin: 0 auto;
+    padding: 5px 15px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.button:hover {
+    background: #999;
+}
+.settings p::after {
+    color: #dd0000;
+    content: "X";
+    cursor: pointer;
+    float: right;
+}
+.selectListClass{
+    font-size: 16px;
+    padding: 9px;
+    border-radius: 5px;
+    display: block;
+    width: 100%;
+}
+
+.img-responsive{
+    position: fixed;
+    margin-top: 2%;
+}
+
+ .error{ border:3px solid red !important;}
+ .scrollVertical {
+    height: 364px;
+    overflow-x: auto;
+    overflow-y: auto;
+    float: left;
+    width: 100%;
+}
+  .messageClass{color: red; display: inline; float: right;position: absolute;margin: 3px;font-size:11px}
+</style>
+
+    <apex:form id="theform">
+    <apex:actionFunction action="{!backtohome}" name="backtohome" />
+    <apex:actionFunction name="callController" action="{!actionPollar}" />
+    <apex:actionFunction name="callCancel" action="{!cancelsetting}" />
+    <apex:outputpanel rendered="{!showActionPollar}">
+        <apex:actionPoller action="{!saveSetting}"  interval="5" reRender="theform" />
+    </apex:outputpanel>
+        <apex:stylesheet value="{!URLFOR($Resource.delphiDemo__css_folder,'/css/custom.css')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.delphiDemo__css_folder,'/css/bootstrap.css')}"/>
+        <apex:includeScript value="{!$Resource.delphiDemo__Jquery}"  />
+        
+     
+
+        <apex:outputPanel styleClass="popupBg" layout="block" rendered="{!showActionPollar}">
+            <apex:outputPanel layout="block" styleClass="popup" rendered="{!showActionPollar}">
+                <apex:image url="{!$Resource.delphiDemo__loadingimg}" width="40" style="margin-left: 20px;"/>
+                <div style="width:auto;">
+            <h1 style="font-size: 14px;width: 332px;float: left;text-align: center;"> Please wait while Delphi is processing your data...</h1>
+            </div>
+            </apex:outputPanel> 
+           
+        </apex:outputPanel>   
+        
+        <div class="background">        
+            <div class="container" style="margin-top:3%;position:relative;">
+            <div class="homebutton">
+                <!--<a href="#" onclick="backtohome();"><apex:image url="{!URLFOR($Resource.Image_folder, 'delphi__Image_folder/images/delphiDemo__Home.png')}" title="Back to Home" style="width:30px;float:right;"/> </a>      -->            
+            </div> 
+       <!--<apex:commandButton title="Graphs" action="{!goToGraph}" image="{!URLFOR($Resource.Image_folder, 'delphi__Image_folder/images/delphiDemo__Home.png')}"/>    --> 
+     <apex:outputpanel rendered="{!altCheck }">
+     
+         <script>
+         setTimeout(function() {$("#abcd").hide();}, 5000);
+         </script>
+          <div id="abcd" class="alert alert-success" style="text-align:left;color:#fff;background-color:#159e18;">
+              <strong>Success.</strong> You can see the Delphi Graphs now.
+          </div>
+        
+    </apex:outputpanel>
+           
+            
+                     
+                <div class= "row">                 
+                    <div class="col-md-12 punch-line" style="margin-top: 0;">
+                        Configure the minimum and maximum time required for opportunities in any stage to get converted.
+                        Also define the minimum and maximum probability of conversion for the opportunity in every stage.
+                        
+                    </div>
+                 </div>
+                 <div class= "row" id="Defaultmsg">
+                     <apex:pageMessages id="msg"/>
+                 </div>
+                 
+                 <div class="row">
+                     <div class="col-md-6">
+                        <div id="errorMessage" style="display:none;">
+                            <div class="alert alert-danger">
+                                <strong>Minimum Value Must Be Less Than Maximum Value</strong>.
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="col-md-6">
+                        <div id="errorMessage1" style="display:none;">
+                            <div class="alert alert-danger">
+                                <strong>Minimum Value Must Be Less Than Maximum Value</strong>.
+                              </div>
+                         </div> 
+                    </div>
+                
+                </div>           
+                 <apex:outputLabel rendered="{!flag}" styleClass="label1">*All fields are Mandatory</apex:outputLabel>
+                 <apex:outputLabel rendered="{!flag}" styleClass="label2">*All fields are Mandatory</apex:outputLabel>                     
+                 <div class="row">
+                 
+                    <div class="col-md-6">
+                    
+                        <div style="background:#9E9E9E;float: left;width: 100%;">
+                        
+                            <div class="table-heading">TIME TO CLOSURE</div> 
+                            <div class="help-text" id="MyImageadmin"  title="Define the expected minimum and maximum time (in days) for every stage in which an opportunity should be converted.">?</div>
+                        </div>
+                    <apex:variable value="{!1}" var="rowNum"/>
+                    <div class="scrollVertical">
+                     <table class="table table-striped" style="border:solid 1px #ccc;">
+                        <tr>
+                            <th>Stage</th>
+                            <th>Min Time (in days)</th>
+                            <th>Max Time (in days)</th>
+                        </tr>
+                        <apex:repeat value="{!lstTimeMapping}" var="tm" id="abcd">
+                            <tr style="font-size:12px;font-weight:bold">                            
+                                <td>
+                                    <apex:outputField value="{!tm.name}" />                                    
+                                </td>
+                                <td>
+                                    <apex:inputField value="{!tm.delphiDemo__Min_Time__c}" rendered="{!flag}" onkeyup="return onlyNum(event,this,'{!tm.name}')"  required="true" id="mind1"  styleClass=""/>
+                                    <apex:outputField value="{!tm.delphiDemo__Min_Time__c}" rendered="{!!flag}"  />
+                                </td>
+                                <td>
+                                    <apex:inputField value="{!tm.delphiDemo__Max_Time__c}" rendered="{!flag}" onkeyup="return onlyNum1(event,this,'{!tm.name}')" id="mind2" required="true"/>
+                                    <apex:outputField value="{!tm.delphiDemo__Max_Time__c}" rendered="{!!flag}" />
+                                </td>
+                            </tr>
+                            <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                        </apex:repeat>
+                        <script>
+                          timeArray = new Array();
+                       <apex:repeat value="{!lstTimeMapping}" var="tm">
+                            timeArray.push({
+                             name: "{!tm.name}",
+                             min : "{!tm.delphiDemo__Min_Time__c}",
+                             max : "{!tm.delphiDemo__Max_Time__c}",
+                             idMin :  "",
+                             idMax : ""           
+                                   });
+                        </apex:repeat>
+                        </script>
+                      
+                    </table>
+                    </div>
+                 </div>
+                            
+                 <div class="col-md-6">
+                     <div class="" style="background:#9E9E9E;float: left;width: 100%;">
+                         <div class="table-heading">PROBABILITY OF CONVERSION</div> 
+                         <div class="help-text" id="MyImageadmin1" title="Define the expected minimum and maximum probability of conversion for the opportunity in every stage.">?</div>                         
+                     </div>
+                     <div class="scrollVertical">
+                     <table class="table table-striped" style="border:solid 1px #ccc;">
+                        <tr>
+                            <th>Stage</th>
+                            <th>Min Prob.</th>
+                            <th>Max Prob.</th>
+                        </tr>
+                         <apex:repeat value="{!lstProbMapping}" var="pm">
+                            <tr style="font-size:12px;font-weight:bold">
+                                <td>
+                                    <apex:outputField value="{!pm.name}" />
+                                </td>
+                                <td>
+                                    
+                                    <apex:inputField value="{!pm.delphiDemo__Min_Probability__c}" onkeyup="return onlydecimal(event,this,'{!pm.name}');" rendered="{!flag}" required="true" id="minProb"/>
+                                    <apex:outputField value="{!pm.delphiDemo__Min_Probability__c}"  rendered="{!!flag}"  />
+                                </td>
+                                <td>
+                                    <apex:inputField value="{!pm.delphiDemo__Max_Probability__c}"  rendered="{!flag}" onkeyup="return onlydecimal1(event,this,'{!pm.name}');" id="maxProb" required="true"/>
+                                    <apex:outputField value="{!pm.delphiDemo__Max_Probability__c}" rendered="{!!flag}"  />
+                                </td>
+                            </tr>
+                        </apex:repeat>
+                        <script>
+                          probArray = new Array();
+                       <apex:repeat value="{!lstProbMapping}" var="pm">
+                            probArray.push({
+                             name: "{!pm.name}",
+                             min : "{!pm.delphiDemo__Min_Probability__c}",
+                             max : "{!pm.delphiDemo__Max_Probability__c}",
+                             idMin :  "",
+                             idMax : ""              
+                                   });
+                        </apex:repeat>
+                        </script>
+                        
+                    </table>
+                    </div>
+                    </div>
+                    </div>
+                    <div class="row" style="text-align: center;margin-bottom: 2%;margin-top: 1%;">
+                        <div class="col-md-12">                        
+                            <apex:commandButton styleClass="action-button" onclick="if(check()){
+                                callController();
+                              }else{
+                                return false;
+                               }" value="Save" rendered="{!flag}" reRender="theform,msg" status="actStatusId"/>
+                            <apex:commandButton action="{!editsetting}" styleClass="action-button " value="Edit" rendered="{!!flag}" reRender="theform" />
+                             
+                            <apex:commandButton action="{!cancelsetting}" styleClass="action-button-cancel" value="Cancel" rendered="{!flag}" onclick="window.location.reload();" immediate="true" />
+                        </div>  
+                  </div>                   
+                </div>         
+        </div>
+   <script>   
+ 
+   
+     function onlyNum(evt,id,name)
+        {       
+       
+        var ch=true;
+        
+      
+        
+         var txtvalue=id.value;        
+         var nextvalue=$(id).next().val();         
+         var length=txtvalue.length;       
+             var charCode = (evt.which) ? evt.which : evt.keyCode;
+             
+              if( !txtvalue.match("^[0-9]*$") ) {
+              
+               txtvalue=0;
+              
+              $(id).val(txtvalue);
+              alert('This field accepts integers only.');
+             
+              return false;
+    }
+    if(txtvalue==999)
+    {
+              txtvalue=txtvalue.substr(0,txtvalue.length-1);
+              
+              $(id).val(txtvalue);
+              alert('Minimum value cannot be equal to 999.');
+             
+              return false;
+    }
+  
+             if(length>=4){
+              txtvalue=0;
+              
+              $(id).val(txtvalue);
+              alert("The field cannot contain more than 3 characters");
+             
+              return false;
+             }
+             /*else{
+             if (charCode > 31 && (charCode < 48  || charCode > 57 ) )
+             {
+             txtvalue=txtvalue.substr(0,txtvalue.length-1);
+              
+              $(id).val(txtvalue);
+                 alert('This field accepts integers onlyyyy!');
+                 
+                 return false;
+             }
+             else{
+          
+             
+             }}  */
+             
+             
+             for(var i=0;i<timeArray.length;i++)
+        {
+        if(timeArray[i].name==name)
+        {
+       
+        ch=false;
+        timeArray[i].min=id.value;
+        timeArray[i].idMin=id;
+        }
+        }
+       
+        if(ch==true)
+        {
+       
+        timeArray.push({
+                             name: name,
+                             min : id.value,
+                             max : 0,
+                             idMin : id,
+                             idMax : ""        
+                                   });
+        }           
+        }  
+        
+        
+        
+        function onlyNum1(evt,id,name)
+        {       
+           var ch=true;
+           var txtvalue=id.value;        
+           var nextvalue=$(id).next().val();         
+           var length=txtvalue.length;       
+           var charCode = (evt.which) ? evt.which : evt.keyCode;
+           if( !txtvalue.match("^[0-9]*$") ) {
+            txtvalue=0;
+              
+              $(id).val(txtvalue);
+              alert('This field accepts integers only.');
+               return false;
+            }
+            
+    
+           if(length>=4){
+           txtvalue=0;
+              
+              $(id).val(txtvalue);
+              alert("The field cannot contain more than 3 characters!")
+              return false;
+            }
+            /*else{
+             if (charCode > 31 && (charCode < 48  || charCode > 57 ) )
+             {
+             txtvalue=txtvalue.substr(0,txtvalue.length-1);
+              
+              $(id).val(txtvalue);
+                 alert('This field accepts integers only.');
+                 return false;
+             }
+             else{
+           
+            
+             
+             }}  */
+             
+          for(var i=0;i<timeArray.length;i++)
+          {
+             if(timeArray[i].name==name)
+             {
+               ch=false;
+               timeArray[i].max=id.value;
+               timeArray[i].idMax=id;
+             }
+          }
+        
+         if(ch==true)
+         {
+                    timeArray.push({
+                             name: name,
+                             max : id.value,
+                             min : 0 ,
+                             idMax : id,
+                             idMin : ""      
+                                   });
+         }
+             
+                        
+        }       
+         
+        
+      
+    </script>
+   
+    <script type="text/javascript">
+        var minprob ='' ;
+        var maxprob = '';
+        function onlydecimal(evt,id,name)
+        {
+            var ch=true;
+            var txtvalue=id.value;
+          
+             var length=txtvalue.length;
+             if(txtvalue.toString().indexOf('.')>-1)
+            {
+             var l1=txtvalue.toString().split(".")[1].length;
+             
+             if(l1>5)
+            {
+             txtvalue=0;
+              
+              $(id).val(txtvalue);
+
+            alert("This field cannot contain more than 5 characters.")
+              return false;
+            }
+             } 
+            
+            if(parseFloat(txtvalue)>=1){
+             txtvalue=0;
+              
+              $(id).val(txtvalue);
+
+            alert("Please enter a value less than 1");
+           
+            return false; 
+            } 
+            
+            if( !txtvalue.match("^[0-9.]*$") ) {
+               txtvalue=0;
+              
+              $(id).val(txtvalue);
+              alert('This field accepts numbers only.');
+             
+              return false;
+    }   
+    
+    
+            
+            if(l1>5)
+            {
+             txtvalue=0;
+              
+              $(id).val(txtvalue);
+            alert("This field cannot contain more than 5 characters.");
+              return false;
+            }
+            else{
+            if(txtvalue<=1){
+            //alert("success");
+           
+            }            
+            } 
+            
+           for(var i=0;i<probArray.length;i++)
+          {
+             if(probArray[i].name==name)
+             {
+               ch=false;
+               probArray[i].min=id.value;
+               probArray[i].idMin=id;
+             }
+          }
+        
+         if(ch==true)
+         {
+                    probArray.push({
+                             name: name,
+                             max : 0,
+                             min : id.value,
+                             idMax : "",
+                             idMin : id      
+                                   });
+         }
+               
+                       
+        }
+        
+        
+        function onlydecimal1(evt,id,name)
+        {
+            var ch=true;
+            var txtvalue=id.value;
+            var length=txtvalue.length;
+            if(txtvalue.toString().indexOf('.')>-1)
+            {
+             var l1=txtvalue.toString().split(".")[1].length;
+             
+             if(l1>5)
+            {
+             txtvalue=0;
+              
+              $(id).val(txtvalue);
+
+            alert("This field cannot contain more than 5 characters.")
+              return false;
+            }
+             }  
+            if(parseFloat(txtvalue)>1){
+             txtvalue=0;
+              
+              $(id).val(txtvalue);
+
+            alert("Please enter a value less than or equal to 1.");
+           
+            return false; 
+            } 
+            
+               
+            if( !txtvalue.match("^[0-9.]*$") ) {
+               txtvalue=0;
+              
+              $(id).val(txtvalue);
+              alert('This field accepts numbers only.');
+             
+              return false;
+    }      
+            
+            else{
+            if(txtvalue<=1){
+            //alert("success");
+           
+            }            
+            } 
+            
+           for(var i=0;i<probArray.length;i++)
+          {
+             if(probArray[i].name==name)
+             {
+               ch=false;
+               probArray[i].max=id.value;
+               probArray[i].idMax=id;
+             }
+          }
+        
+         if(ch==true)
+         {
+                    probArray.push({
+                             name: name,
+                             max : id.value,
+                             min : 0,
+                             idMax : id,
+                             idMin : ""      
+                                   });
+         }
+               
+                       
+        }
+        
+    function check() {
+    
+        var d = true;
+        var probCheck = true;
+        $("[id$='mind1']").each(function(index) {
+            if ($(this).val() == "") {
+                d = false;
+                return d;
+            }
+        });
+    
+        $("[id$='mind2']").each(function(index) {
+            if ($(this).val() == "") {
+    
+                d = false;
+                return d;
+            }
+        });
+    
+        $("[id$='minProb']").each(function(index) {
+            if ($(this).val() == "") {
+    
+                probCheck = false;
+                return probCheck;
+            }
+        });
+    
+        $("[id$='maxProb']").each(function(index) {
+            if ($(this).val() == "") {
+    
+                probCheck = false;
+                return probCheck;
+            }
+        });
+    
+    
+        if (d == false) {
+            $(this).attr('id').addClass('error');
+            return d;
+        }
+    
+        if (probCheck == false) {
+            $(this).attr('id').addClass('error');
+            return probCheck;
+        }
+        for (var i = 0; i < timeArray.length; i++) {
+            if (parseInt(timeArray[i].min) >= parseInt(timeArray[i].max)) {
+    
+    
+                $(timeArray[i].idMin).addClass('error');
+                $(timeArray[i].idMax).addClass('error');
+    
+    
+                d = false;
+            } else {
+                if ($(timeArray[i].idMin).hasClass('error')) {
+                    $(timeArray[i].idMin).removeClass('error')
+                }
+                if ($(timeArray[i].idMax).hasClass('error')) {
+                    $(timeArray[i].idMax).removeClass('error')
+                }
+            }
+        }
+    
+    
+        if (d == false) {
+    
+            $('#errorMessage').show();
+             $('#Defaultmsg').hide();
+            
+        } else {
+            $('#errorMessage').hide();
+        }
+    
+    
+        for (var i = 0; i < probArray.length; i++) {
+        var vs = isNaN(probArray[i].max);
+        var vs1 = isNaN(probArray[i].min);
+ 
+                if (parseFloat(probArray[i].min) >= parseFloat(probArray[i].max)) {
+                $(probArray[i].idMin).addClass('error');
+                $(probArray[i].idMax).addClass('error');
+    
+                probCheck = false;
+            } else {
+                if ($(probArray[i].idMin).hasClass('error')) {
+                    $(probArray[i].idMin).removeClass('error')
+                }
+                if ($(probArray[i].idMax).hasClass('error')) {
+                    $(probArray[i].idMax).removeClass('error')                 
+                }
+            }
+            if(vs){
+             $(probArray[i].idMax).addClass('error');
+             probCheck = false;
+            }
+            if(vs1){
+                $(probArray[i].idMin).addClass('error');
+                probCheck = false;
+            }
+            
+        }
+    
+        if (probCheck == false) {
+    
+            $('#errorMessage1').show();
+            $('#Defaultmsg').hide();
+        } else {
+            $('#errorMessage1').hide();
+        }
+    
+        if (d == false || probCheck == false) {
+    
+            return false;
+        } else {
+    
+    
+    
+            return true;
+    
+        }
+    
+    }
+        
+        
+    function cancel()
+    {
+        return true;
+    }
+        
+    </script>
+    <script type="text/javascript">
+         function ImageOver(MyImageadmin) { MyImageadmin.src='{!$Resource.delphiDemo__Helpertextimgshow}'; }
+         function ImageNormal(MyImageadmin) { MyImageadmin.src='{!$Resource.delphiDemo__Helpertextimghide}'; }
+         function ImageOver(MyImageadmin1) { MyImageadmin1.src='{!$Resource.delphiDemo__Helpertextimgshow}'; }
+         function ImageNormal(MyImageadmin1) { MyImageadmin1.src='{!$Resource.delphiDemo__Helpertextimghide}'; }
+    </script>
+ 
+      
+ 
+    </apex:form>
+  
+</apex:page>

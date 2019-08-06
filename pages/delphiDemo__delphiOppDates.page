@@ -1,0 +1,14 @@
+<apex:page id="mainpage" controller="delphiDemo.DelphiOppDates"  docType="html-5.0" sidebar="false"   cache="true" showHeader="false" >
+
+<apex:form >
+
+
+
+<apex:selectList value="{!selectedVal}" size="1"> 
+    <apex:selectOptions value="{!backWardList}" /> 
+</apex:selectList>
+
+<apex:commandButton action="{!updateDates}" value="Next" id="theButton" />
+</apex:form>
+
+</apex:page>

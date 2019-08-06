@@ -1,0 +1,32 @@
+<aura:component controller="LeadComponentController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="leadList" type="Lead[]"/>
+    
+     <aura:handler name="init" value="{!this}" action="{!c.fetchLeads}"/>
+    <div>
+    	<lightning:button class="btn-color" name="leadbutton" label="get Leads" onclick="{!c.fetchLeads}"/>
+    </div>
+    <table>
+    	<thead>
+        	<tr>
+            	<th>Lead Name</th>
+                <th>Lead Company</th>
+                <th> Lead Email</th>
+                <th> Lead Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+        	<aura:iteration items="{!v.leadList}" var="l">
+            	<tr>
+                    
+                	<td>{!l.Name}</td>
+                    
+                    <td>{!l.Company}</td>
+                   
+                    <td> {!l.Email}</td>
+                    <td> {!l.Phone}</td>
+                    
+                </tr>
+            </aura:iteration>
+        </tbody>
+    </table>
+</aura:component>

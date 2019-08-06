@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>delphiDemo__CloseLostStages__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>CloseLostStages</label>
+        <length>200</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>delphiDemo__ClosedWonStages__c</fullName>
+        <deprecated>false</deprecated>
+        <description>stages which are treated as &apos;Closed Won&apos;</description>
+        <externalId>false</externalId>
+        <label>ClosedWonStages</label>
+        <length>200</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>DelphiStages</label>
+    <visibility>Public</visibility>
+</CustomObject>

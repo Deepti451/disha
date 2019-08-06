@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>saga</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>sagas</value>
+    </caseValues>
+    <fields>
+        <label><!-- Far --></label>
+        <name>Far__c</name>
+    </fields>
+    <fields>
+        <label><!-- celsius --></label>
+        <name>celsius__c</name>
+    </fields>
+    <fields>
+        <label><!-- email --></label>
+        <name>email__c</name>
+    </fields>
+    <fields>
+        <label><!-- van --></label>
+        <name>van__c</name>
+    </fields>
+    <fields>
+        <label><!-- vandana --></label>
+        <name>vandana__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

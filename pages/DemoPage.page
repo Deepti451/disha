@@ -1,0 +1,10 @@
+<apex:page controller="DemoClass" action="{!printAccount}" lightningStylesheets="true">
+     
+		{!accList}
+	<apex:form >
+       
+        
+    </apex:form>    
+   
+    
+</apex:page>

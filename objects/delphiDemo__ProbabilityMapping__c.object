@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>Store the Max and Min probability of the opportunity.</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>delphiDemo__Max_Probability__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Store the max probability of the opportunity.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Store the max probability of the opportunity.</inlineHelpText>
+        <label>Max Probability</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>delphiDemo__Min_Probability__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Store the min probability of the opportunity.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Store the min probability of the opportunity.</inlineHelpText>
+        <label>Min Probability</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>delphiDemo__Probability_Mean__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Capture the mean of the probability.</description>
+        <externalId>false</externalId>
+        <label>Probability Mean</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>8</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>delphiDemo__Probability_SD__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Probability SD</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>8</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>Probability Mapping</label>
+    <visibility>Public</visibility>
+</CustomObject>

@@ -1,0 +1,15 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="NametoShow" type="String" default=""/>
+    <aura:attribute name="CompanytoShow" type="String" default=""/>
+    <aura:attribute name="EmailtoShow" type="String" default=""/>
+    <aura:attribute name="PhonetoShow" type="Integer" default="0"/>
+    <aura:attribute name="eventCaught" type="Boolean" default="false"/>
+    <aura:handler event="c:resultEvent" action="{!c.handleGranEvent}"/>
+    <aura:if isTrue="{!v.eventCaught}">
+        Name: {!v.NametoShow} <br/>
+        Company: {!v.CompanytoShow}<br/>
+        Email: {!v.EmailtoShow}<br/>
+        Phone:{!v.PhonetoShow}<br/>
+    
+    </aura:if>
+</aura:component>

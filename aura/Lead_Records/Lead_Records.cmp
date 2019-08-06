@@ -1,0 +1,28 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="leadRecords" type="Lead[]"/>
+    <aura:handler name="init" value="{!this}" action="{!c.fetchRecords}"/>
+    
+    <table>
+    	<thead>
+        	<tr>
+                	<th> Name</th>
+                	<th> Company</th>
+                	<th> Email</th>
+                	<th> Phone</th>
+            	
+            </tr>
+        </thead>
+        <tbody>
+        	<aura:iteration items="{!leadRecords}" var="r">
+            	<tr>
+                	<td> {!r.Name}</td>
+                    <td> {!r.Company}</td>
+                    <td> {!r.Email}</td>
+                    <td> {!r.Phone}</td>
+                </tr>
+            
+            </aura:iteration> 
+        </tbody>
+    </table>
+                    
+</aura:component>

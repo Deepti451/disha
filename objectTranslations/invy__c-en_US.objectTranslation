@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>invy</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>inys</value>
+    </caseValues>
+    <fields>
+        <label><!-- Account --></label>
+        <name>Account__c</name>
+        <relationshipLabel><!-- inys --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- closur date --></label>
+        <name>closur_date__c</name>
+    </fields>
+    <fields>
+        <label><!-- invy balance --></label>
+        <name>invy_balance__c</name>
+    </fields>
+    <fields>
+        <label><!-- invy date --></label>
+        <name>invy_date__c</name>
+    </fields>
+    <fields>
+        <label><!-- invy amount --></label>
+        <name>invy_number__c</name>
+    </fields>
+    <fields>
+        <label><!-- paid bal --></label>
+        <name>paid_bal__c</name>
+    </fields>
+    <recordTypes>
+        <label><!-- newrecordtype --></label>
+        <name>newrecordtype</name>
+    </recordTypes>
+    <recordTypes>
+        <label><!-- newrecordtype2 --></label>
+        <name>newrecordtype2</name>
+    </recordTypes>
+    <recordTypes>
+        <label><!-- vechile --></label>
+        <name>vechile</name>
+    </recordTypes>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

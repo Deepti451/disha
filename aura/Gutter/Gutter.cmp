@@ -1,0 +1,27 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+    <aura:attribute name="buttonlabel" type="String" default="Search"/>
+    <aura:attribute name="newlabel" type="String" default="New"/>
+    <aura:attribute name="avaliable" type="String" default="available"/>
+    
+    
+     <div class="slds-grid slds-gutter" >
+         <div class="slds-col slds-size_1-of-3">
+         <lightning:button variant="base" label="Base" title="Base action" onclick="{!c.SearchClick }"/>
+         </div>
+         <div class="slds-col slds-size_1-of-3">
+             <lightning:button onclick="{!c.toggleButton}" variant="neutral" label="Togglebutton"/></div>
+             <div class="slds-col slds-size_1-of-3">
+                 <lightning:button onclick="{!c.availablebutton}" variant="base" label="Available" title="Base action"/>
+         </div>
+    </div>
+   
+  <div class="slds-col">
+    <span>base</span>
+  </div>
+  <div class="slds-col">
+    <span>neutral</span>
+  </div>
+  <div class="slds-col">
+    <span>available</span>
+  </div>
+</aura:component>

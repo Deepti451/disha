@@ -1,0 +1,39 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction,force:hasRecordID" access="global" >
+	<aura:attribute name="recordId" type="String" />
+    <lightning:recordEditForm
+                              onsubmit="{!c.handleSubmit}"
+                              recordId="{!v.recordId}"
+                              objectAPIName="Account">
+        <!---the message component is for Error message-->
+        
+
+        <lightning:messages />
+        
+        <lightning:inputField fieldName="Newsletter_Marketing_Options__c"/>
+        <lightning:inputField fieldName="Collateral_we_send_to_client__c"/>
+        <lightning:inputField fieldName="Benefits_Vendor_Show__c"/>
+        <lightning:inputField fieldName="CTA_for_collateral__c"/>
+        <lightning:inputField fieldName="Employee_Information_Board__c"/>
+        <lightning:inputField fieldName="Brochures_quantity__c"/>
+        <lightning:inputField fieldName="Giveaway_Table__c"/>
+        <lightning:inputField fieldName="Posters__c"/>
+        <lightning:inputField fieldName="Additional_Ways_Account_Advertises_Rates__c"/>
+        <lightning:inputField fieldName="Triangle_Tents_quantity__c"/>
+        <lightning:inputField fieldName="Timing_of_Brochure_Print_1__c"/>
+        <lightning:inputField fieldName="Timing_of_Brochure_Print_2__c"/>
+        <lightning:inputField fieldName="Mouse_Pads_quantity__c"/>
+        <lightning:inputField fieldName="Give_Aways_quantity__c"/>
+        <lightning:inputField fieldName="Collateral_Choices__c"/>
+        <lightning:inputField fieldName="Frequency_of_Magazine__c"/>
+        <lightning:inputField fieldName="Notes__c"/>
+        
+        <div class="slds-m-top_medium">
+            <lightning:button disabled="{v.disabled}" variant="brand" type="submit" name="save" label="Save"/>
+        
+        </div>
+                                          
+                                   
+       </lightning:recordEditForm>
+    location.reload()
+
+</aura:component>

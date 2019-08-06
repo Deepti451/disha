@@ -1,0 +1,46 @@
+<apex:page controller="delphiDemo.DelphiGraphs" contentType="application/vnd.ms-excel#Revenue_Forecast({!times}).xls" cache="true" readOnly="true">  
+    
+          <table border="1" >         
+             <tr style="font-weight:bold;  ">
+                 <td>
+                  <font color="Blue" > Opportunity Name </font>
+                 </td>                 
+                 <td> 
+                   <font color="Blue" >  Current Stage </font>
+                 </td>
+                 <td>
+                   <font color="Blue" > Owner Name </font>
+                 </td>
+                 <td>
+                   <font color="Blue" >  Expected Conversion Month </font>
+                 </td>
+                 <td>
+                   <font color="Blue" > Expected Revenue </font>
+                 </td>
+             </tr>
+         <apex:repeat value="{!lstOpportunityExport}" var="rev" >
+             <tr>
+                 <td >
+                    <apex:outputfield value="{!rev.name}" />
+                 </td>            
+                 <td >
+                    <apex:outputfield value="{!rev.StageName}" />
+                 </td>
+                 
+                 <td >
+                    <apex:outputfield value="{!rev.owner.name}" />
+                 </td>
+                 <td >
+                     <apex:outputfield value="{!rev.delphiDemo__Completion_Date__c}" />
+                 </td>
+            
+                 <td >
+                     <apex:outputtext value="{!rev.Amount}" />
+                 </td>
+                 
+            </tr> 
+         </apex:repeat>
+     </table>
+     
+    
+</apex:page>

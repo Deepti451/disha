@@ -1,0 +1,802 @@
+<apex:page controller="delphiDemo.DelphiGraphs" sidebar="false" showHeader="true" tabStyle="Delphi_Graphs__tab">
+<apex:includeScript value="/soap/ajax/32.0/connection.js"/>
+<apex:includeScript value="/soap/ajax/32.0/apex.js"/>
+
+<style>
+.select-box {
+    border: solid 1px #999;
+    padding: 4px 4px;
+    min-width: 138px;
+    font-size: small;
+}
+.expiry-frm{
+        background: #6aafac;
+        width: 1286px;
+        height: 545px;
+        margin-top: 49px;
+        margin-left: 45px;
+        display:none;
+        
+    }
+   .home-btn{
+        text-decoration: none !important;
+        background: #1c8adb;
+        color: #fff !important;
+        display: block;
+        width: 3%;
+        padding: 9px 9px;
+        font-weight: 600;
+        margin-left: 1%;
+        border-radius: 38px;
+        box-shadow: #c1c1c1 4px 3px;
+        position: absolute;
+        margin-top: 18px;
+}
+.home-btn:hover{
+    background: #1797c0;
+}
+
+
+.apexp .bPageBlock.apexDefaultPageBlock .pbBody {
+    margin-left : 0px;
+    margin-right : 0px;
+}
+.homebutton{
+    float: right;
+    margin-right: 35px;
+    z-index: 9999;
+    position: fixed;
+    font-size: 11px;
+    font-weight: 400;
+    left: 5%;
+    top: 36px;
+    padding: 0
+}
+
+</style>
+  <apex:form id="formid">  
+<!--  page with five graphs  -->
+
+    <apex:stylesheet value="{!URLFOR($Resource.delphiDemo__css_folder,'/css/css3.css')}"/> 
+    <apex:stylesheet value="{!URLFOR($Resource.delphiDemo__css_folder,'/css/bootstrap.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.delphiDemo__css_folder,'/css/custom.css')}"/>
+    <apex:includeScript value="{!$Resource.delphiDemo__Jquery}"  />
+    <apex:includeScript value="{!$Resource.delphiDemo__ChartJS}"  />
+    <apex:includeScript value="{!$Resource.delphiDemo__canvasChartJS}"  />  
+
+
+<script type="text/javascript">
+     function ImageOver(MyImageadmin) { MyImageadmin.src='{!$Resource.Helpertextimgshow}'; }
+     function ImageNormal(MyImageadmin) { MyImageadmin.src='{!$Resource.delphiDemo__Helpertextimghide}'; }
+     function ImageOver(MyImageadmin1) { MyImageadmin1.src='{!$Resource.Helpertextimgshow}'; }
+      function ImageNormal(MyImageadmin1) { MyImageadmin1.src='{!$Resource.delphiDemo__Helpertextimghide}'; }
+  </script>
+  
+<script type="text/javascript">
+     function ImageOver(MyImage) { MyImage.src='{!$Resource.Helpertextimgshow}'; }
+     function ImageNormal(MyImage) { MyImage.src='{!$Resource.delphiDemo__Helpertextimghide}'; }
+     function ImageOver(MyImage1) { MyImage1.src='{!$Resource.Helpertextimgshow}'; }
+     function ImageNormal(MyImage1) { MyImage1.src='{!$Resource.delphiDemo__Helpertextimghide}'; }
+     function ImageOver(MyImage2) { MyImage2.src='{!$Resource.Helpertextimgshow}'; }
+     function ImageNormal(MyImage2) { MyImage2.src='{!$Resource.delphiDemo__Helpertextimghide}'; }
+     function ImageOver(MyImage3) { MyImage3.src='{!$Resource.Helpertextimgshow}'; }
+     function ImageNormal(MyImage3) { MyImage3.src='{!$Resource.delphiDemo__Helpertextimghide}'; }
+     function ImageOver(MyImage4) { MyImage4.src='{!$Resource.Helpertextimgshow}'; }
+     function ImageNormal(MyImage4) { MyImage4.src='{!$Resource.delphiDemo__Helpertextimghide}'; }
+     function ImageOver(MyImage5) { MyImage5.src='{!$Resource.Helpertextimgshow}'; }
+     function ImageNormal(MyImage5) { MyImage5.src='{!$Resource.delphiDemo__Helpertextimghide}'; }
+     function ImageOver(MyImage6) { MyImage6.src='{!$Resource.Helpertextimgshow}'; }
+     function ImageNormal(MyImage6) { MyImage6.src='{!$Resource.delphiDemo__Helpertextimghide}';} 
+     
+     
+</script>
+   <!-- script start-->
+
+<script type="text/javascript">
+
+          var temp;   
+          var colorArr =["#6f7072","#87b750","#f9bc36","#e85c50","#5eb7c7","#6dccdd","#959595","#a7cad0","#f3d185","#b6d690","#c4392d","#63d4e8","#6a8e94","#0c7082","#718abc","#edab19","#e6e457","#949cac","#ececed","#a3e952"];  
+
+  window.onload = function () {
+    $('body').prepend('<div id="fadediv"></div>');
+    
+    revenueforecast();
+    topaccount();
+    bottomaccount();
+    topPerformer();   
+    topOpportunity(); 
+    var graphnamee =getCookie("divname");   
+  
+        if(graphnamee == 'revForcaste'){
+            $(this).scrollTop(0);
+        }
+        if(graphnamee == 'topOpportunity'){
+            $(this).scrollTop(630);
+        }
+        if(graphnamee == 'topAccounts'){
+            $(this).scrollTop(1275);
+        }
+        if(graphnamee == 'bottomAccounts'){
+            $(this).scrollTop(1275);
+        }
+        
+        if(graphnamee == 'topPerformers'){
+            $(this).scrollTop(1925);
+        }  
+        setCookie("divname", "", 30); 
+    }    
+    function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+    }
+    function setCookie(cname,cvalue,exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires=" + d.toGMTString();
+        document.cookie = cname+"="+cvalue+"; "+expires;
+    }   
+     
+     function divid(divname){
+     var divv = divname.id;
+    
+      setCookie("divname", divv, 30);              
+     
+     }  
+ function revenueforecast(){     
+         
+       var topacnt=[];
+       var monthname=[];
+       var account=[];
+       var updateMonthName=[];
+ <apex:repeat value="{!datalistforbarGraph}" var="request">    
+         account.push('{!request.month}');
+         monthname.push('{!request.month}');         
+         topacnt.push('{!request.expectedRevenue}');       
+ </apex:repeat>
+ 
+ for(var i in monthname)
+ {
+  var info=monthname[i].split(' ');
+  
+  updateMonthName.push(info[0]+" '"+info[1]);
+ }
+ 
+    data = {
+        labels: account,
+        
+        datasets: [
+            {
+                backgroundColor:colorArr,
+                data: topacnt,
+                nameofmonth: monthname
+            }
+        ]
+    }
+ 
+    var barChart = commonChartData(data,"showtwelveRevforcast","Month of the year","Expected Revenue");
+     
+    document.getElementById("showtwelveRevforcast").onclick =function(e){
+        var activePoints  = barChart.getElementAtEvent(e);
+        
+        temp = barChart.config.data.datasets[activePoints[0]._datasetIndex].data[activePoints[0]._index]; 
+        
+        var tempMonthName = barChart.config.data.datasets[activePoints[0]._datasetIndex].nameofmonth[activePoints[0]._index];
+        
+        revOpportunity(tempMonthName);
+               
+        loading('toPopuprev'); // loading
+            /*setTimeout(function(){ // then show popup, deley in .5 second
+                loadPopup('toPopuprev'); // function show popup 
+            }, 1000); // .5 second*/
+                                
+        }
+
+   }  
+  
+ function topaccount(){      
+//alert('::::::::::');
+
+       var topacnt=[];
+       var accid=[];
+       var account=[];
+     <apex:repeat value="{!wrapperlistforacntamount}" var="request">    
+         account.push('{!request.acc.name}');
+         topacnt.push('{!request.eamount}');
+         accid.push('{!request.acc.owner.name}');
+     </apex:repeat>    
+    
+    data = {
+    labels: account,
+    datasets: [
+        {
+           backgroundColor:colorArr,
+           data: topacnt,
+           aid: accid
+        }
+    ]
+    
+}
+console.log("topacnt data: "+JSON.stringify(data));
+
+ var barChart =commonChartData(data,"showTwelveTopacnt","Accounts","Expected Revenue");
+
+ document.getElementById("showTwelveTopacnt").onclick =function(e){
+        var activePoints  = barChart.getElementAtEvent(e);
+        temp = barChart.config.data.datasets[activePoints[0]._datasetIndex].data[activePoints[0]._index]; 
+        var tempAccountId = barChart.config.data.datasets[activePoints[0]._datasetIndex].aid[activePoints[0]._index];
+        topacnt123(tempAccountId);      
+          loading('toPopup1'); // loading
+            setTimeout(function(){ // then show popup, deley in .5 second
+                loadPopup('toPopup1'); // function show popup 
+            }, 500); // .5 second                                
+        } 
+       
+ }
+
+
+function bottomaccount(){ 
+    
+       var topacnt=[];
+       var accid=[];
+       var account=[];
+       
+     <apex:repeat value="{!wrapperlistforbottomamount}" var="request"> 
+         account.push('{!request.acc.name}');
+         topacnt.push('{!request.eamount}');         
+         accid.push('{!request.acc.owner.name}'); 
+     </apex:repeat>
+      
+   data = {
+    labels: account,
+    datasets: [
+        {
+            backgroundColor:colorArr,
+           data: topacnt,
+           aid: accid
+        }
+    ]
+}
+
+ var barChart =commonChartData(data,"showTwelveBottomAcnt","Accounts","Expected Revenue");
+ document.getElementById("showTwelveBottomAcnt").onclick =function(e){
+        var activePoints  = barChart.getElementAtEvent(e);
+        temp = barChart.config.data.datasets[activePoints[0]._datasetIndex].data[activePoints[0]._index]; 
+        var tempAccountId = barChart.config.data.datasets[activePoints[0]._datasetIndex].aid[activePoints[0]._index];
+        bottomacnt(tempAccountId);
+          loading('bottomPopup'); // loading
+            setTimeout(function(){ // then show popup, deley in .5 second
+                loadPopup('bottomPopup'); // function show popup 
+            }, 500); // .5 second                                
+        }  
+ }
+ 
+  
+ function topPerformer(){ 
+    
+       var topacnt=[];
+       var accid=[];
+       var account=[];
+     <apex:repeat value="{!wrapperlistfortopPerformer}" var="request"> 
+         account.push('{!request.onames}');
+         topacnt.push('{!request.eamount}');  
+     </apex:repeat>
+      
+   
+   data = {
+    labels: account,
+    datasets: [
+        {
+            backgroundColor:colorArr,
+           data: topacnt,
+           
+        }
+    ]
+}
+
+
+ var barChart =commonChartData(data,"showTwelveTopPerformer","Users","Expected Revenue");
+ document.getElementById("showTwelveTopPerformer").onclick =function(e){
+        var activePoints  = barChart.getElementAtEvent(e);
+        //alert(e.dataPoint.label);
+        temp = barChart.config.data.datasets[activePoints[0]._datasetIndex].data[activePoints[0]._index];                      
+        topacnt(temp);
+          loading('toPopup1'); // loading
+            setTimeout(function(){ // then show popup, deley in .5 second
+                loadPopup('toPopup1'); // function show popup 
+            }, 500); // .5 second
+                                
+        } 
+ }
+   
+ function topOpportunity(){ 
+    
+       var topacnt=[];
+       var oppStage=[];
+       var account=[];
+       var oppowner=[];
+     <apex:repeat value="{!wrapperlistforTopOpportunities}" var="request">
+         account.push('{!request.opps.name}');
+         topacnt.push('{!request.eamount}');      
+         oppStage.push('{!request.opps.stagename}');
+         oppowner.push('{!request.opps.owner.name}');      
+     </apex:repeat>
+   
+   data = {
+    labels: account,
+    datasets: [
+        {
+            backgroundColor:colorArr,
+            data: topacnt,
+            stage: oppStage,
+            opowner: oppowner,          
+        }
+    ]
+}
+
+ var barChart =commonChartData(data,"showTwelveTopOpportunity","Opportunities","Expected Revenue");
+ document.getElementById("showTwelveTopOpportunity").onclick =function(e){
+        var activePoints  = barChart.getElementAtEvent(e);
+        //alert(e.dataPoint.label);
+        temp = barChart.config.data.datasets[activePoints[0]._datasetIndex].data[activePoints[0]._index];                      
+        topacnt(temp);
+          loading('toPopup1'); // loading
+            setTimeout(function(){ // then show popup, deley in .5 second
+                loadPopup('toPopup1'); // function show popup 
+            }, 500); // .5 second                               
+        }
+        
+ }
+ 
+ 
+function commonChartData(data,canvasId,xTitle,yTitle){
+    Chart.defaults.global.legend.display = false;    
+    var options ={
+    responsive: true,
+     animation: false,
+     title:{
+            display:true,
+            fontSize:32,
+            
+          },
+      tooltips: {
+        enabled: true,
+        backgroundColor: "#5eb7c7",
+       
+        Color: "black",
+        callbacks: {
+                title: function(tooltipItems, data) {
+                    return tooltipItems[0].xLabel;
+                },
+                label: function(tooltipItems, data) {
+                    return "$ "+ tooltipItems.yLabel;
+                },
+                 
+                afterFooter: function(tooltipItems, data) {
+                   if(data.datasets[0].hasOwnProperty("aid")){
+                       return "Account Owner : "+ data.datasets[0].aid[tooltipItems[0].index];
+                   }else{
+                       return "";
+                   }
+                },               
+                
+                beforeFooter: function(tooltipItems, data) {
+                   if(data.datasets[0].hasOwnProperty("stage")){
+                   
+                   
+                       return "Current Stage : "+ data.datasets[0].stage[tooltipItems[0].index];
+                   }else{
+                       return "";
+                   }
+                },
+                footer: function(tooltipItems, data) {
+                   if(data.datasets[0].hasOwnProperty("opowner")){
+                       return "Opportunity Owner : "+ data.datasets[0].opowner[tooltipItems[0].index];
+                   }else{
+                       return "";
+                   }
+                },
+            }
+      },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                    
+                },
+    scaleLabel: {
+     display: true,
+     labelString: yTitle,
+     fontStyle: "bold",
+     fontColor: "#5eb7c7",
+     fontSize:15,
+      }
+    
+            }],
+   xAxes:[{
+     gridLines:{display:false},
+     scaleLabel: {
+      display: true,
+      labelString: xTitle,
+      fontStyle: "bold",
+      fontColor: "#5eb7c7",
+      fontSize:15,      
+      
+     },
+     ticks: {
+               autoSkip:false                    
+            },
+    
+     }]
+        }         
+    };
+    console.log(data);
+    var ctx = document.getElementById(canvasId).getContext("2d");    
+    var barFill = new Chart(ctx, {
+    type: 'bar',
+    data: data,
+    options: options
+    });
+return barFill; 
+}
+
+
+function loading(id) {
+       
+        $("#"+id).show();  
+        $( "#popupbody" ).scrollTop(1 );
+        $("#fadediv").show();
+    }
+    function closeloading(id) {
+        $("#"+id).fadeOut('normal');  
+    }
+
+    var popupStatus = 0; // set value
+
+    function loadPopup(id) { 
+    
+        if(popupStatus == 0) { // if value is 0, show popup
+            closeloading(id); // fadeout loading
+            $("#"+id).fadeIn(0500); // fadein popup div    
+        }   
+    }
+
+    function disablePopup() {
+        if(popupStatus == 1) { // if value is 1, close popup
+            $("#toPopup").fadeOut("normal");  
+            $("#backgroundPopup").fadeOut("normal");  
+            popupStatus = 0;  // and set value to 0
+        }
+    } 
+    function hide(id){
+   
+     $("#"+id).fadeOut("normal");
+     
+    $("#fadediv").fadeOut("normal");
+  
+    } 
+    
+
+
+ </script>
+<!-- script End-->
+ <!--   Revenue Forecast table start      -->
+  
+ <apex:actionFunction action="{!backtohome}" name="backtohome" />
+
+ <apex:actionFunction action="{!getData}" name="getDataFunction" >
+     
+ </apex:actionFunction>
+
+<apex:actionFunction action="{!dataRevnueForcast}" name="revOpportunity" reRender="poprev">
+     <apex:param id="topacntamt24" value="" assignTo="{!monthName}" name="tpacntamtt24" />
+ </apex:actionFunction>
+ 
+  
+
+<div class="container">
+   
+   <div class="col-md-12 graph_div_height column-border" id="revforcaste"  onclick="divid(this);">
+          <apex:outputPanel id="revenueid" >
+            <div class="homebutton">
+                <!--<a href="#" onclick="backtohome();"><apex:image url="{!URLFOR($Resource.Home)}"  title="Back to Home" style="width:30px;" /> </a>   -->
+                           
+            </div> 
+            <div id="revenue-forecast" >
+            <div class="row">
+                <h2 class="title-header" >Revenue Forecast</h2>                                      
+            </div>
+            
+            <apex:pageBlock id="revenueforcast">
+               <div class="row dropDownRow">
+                 <div class="col-md-5">
+                   <apex:outputLabel ><b>Confidence Level</b><apex:image url="{!$Resource.delphiDemo__Helpertextimghide}" width="25" height="16" id="MyImage" onmouseover="ImageOver(this)" onmouseout="ImageNormal(this)" title="This is the percentage by which the actual value will be similar to the expected value." /></apex:outputLabel><br/>
+                    <apex:selectlist multiselect="false" size="1" value="{!confilterone}" styleClass="select-box" >
+                        <apex:selectOptions value="{!confidenceintervel}"/> 
+                           <apex:actionSupport event="onchange" action="{!saveconfandmon}" oncomplete="revenueforecast();"  status="actStatusId" >
+                             <apex:actionStatus id="actStatusId"  >
+                               <apex:facet name="start" >
+                                  <apex:image url="{!$Resource.delphiDemo__loadingimg}" styleClass="popup" />                    
+                               </apex:facet>
+                             </apex:actionStatus> 
+                         </apex:actionSupport>
+                    </apex:selectlist>
+                </div>
+               
+                  <div class="col-md-4">
+                    <apex:outputLabel ><b>Time Period</b><apex:image url="{!$Resource.delphiDemo__Helpertextimghide}" width="25" height="16" id="MyImage1" onmouseover="ImageOver(this)" onmouseout="ImageNormal(this)" title="This is the duration for which the forecast is displayed." /></apex:outputLabel><br/>
+                    <apex:selectlist value="{!selectedoptionrev }" multiselect="false" size="1" id="selectoptionvalue" onchange="getDataFunction('revForcaste');" styleClass="select-box">
+                        <apex:selectoptions value="{!optionlist}"/>
+                    </apex:selectlist> 
+                  </div>
+                  
+                  <div class="col-md-3 pull-right expbutt">
+                      <apex:commandbutton value="Export Data " styleClass="export-data-btn Exportbutton" action="{!exportRevnueForcast}"  />
+                  </div>
+                  
+             </div>
+            
+          <apex:outputPanel id="graphviewone">
+                  <div class="graphContainer"  >
+                        <canvas id="showtwelveRevforcast" height="120"></canvas>
+                   </div> 
+                  </apex:outputPanel>
+                  
+            </apex:pageBlock>
+         </div>
+      </apex:outputPanel>
+    </div>
+          
+<!--   Revenue Forecast table End      --> 
+    
+
+<!--   Top Opportinities table Start      --> 
+
+<div class="col-md-12 graph_div_height column-border" onclick="divid(this);" id="topOpportunity">
+      <apex:outputPanel id="panalthree">
+         <div id="top-monthly-opp" >
+            <div class="row" >
+            <h2 class="title-header" >Top 20 Opportunities</h2>
+            </div>
+         <apex:outputPanel id="hojarender">        
+        <apex:pageBlock id="oppoptn">
+            <div class="row dropDownRow">
+                <div class="col-md-3">
+                    <apex:outputLabel ><b>Confidence Level</b><apex:image url="{!$Resource.delphiDemo__Helpertextimghide}" width="25" height="16" id="MyImage8" onmouseover="ImageOver(this)" onmouseout="ImageNormal(this)" title="This is the percentage by which the actual value will be similar to the expected value." /></apex:outputLabel><br/>
+                    <apex:selectlist multiselect="false" size="1" value="{!confilterFive}" styleClass="select-box">
+                        <apex:selectOptions value="{!confidenceintervel}" />
+                         <apex:actionSupport event="onchange" action="{!saveconfandmonFive}" oncomplete="topOpportunity();" status="actStatusIdtopacc" >
+                           <apex:actionStatus id="actStatusIdtopacc"  >
+                               <apex:facet name="start" >
+                                  <apex:image url="{!$Resource.delphiDemo__loadingimg}" styleClass="popup" />                    
+                               </apex:facet>
+                             </apex:actionStatus>
+                        </apex:actionSupport>
+                    </apex:selectlist>
+                </div>
+                <div class="col-md-3">
+                <apex:actionFunction action="{!seloptnforoppomtd}" name="monselection" reRender="monthlist" status="monstatus"/>
+                    <apex:outputLabel ><b>Time Period</b><apex:image url="{!$Resource.delphiDemo__Helpertextimghide}" width="25" height="16" id="MyImage9" onmouseover="ImageOver(this)" onmouseout="ImageNormal(this)" title="This is the duration for which the forecast is displayed." /></apex:outputLabel><br/>
+                    <apex:selectlist value="{!selectedoptnforTopOpp}" multiselect="false" size="1" id="topOpp"  onchange="getDataFunction('topOpportunity');" styleClass="select-box">
+                        <apex:selectoptions value="{!optionListOpportunity}" />
+                    </apex:selectlist>
+                </div>
+                  <div class="col-md-3 pull-right expbutt">
+                      <apex:commandbutton value="Export Data" styleClass="export-data-btn Exportbutton" action="{!exportTopOpportunities}" />
+                 </div>
+                 <div class="col-md-2" >
+                   <apex:outputPanel id="monthlist" rendered="{!monList}">                      
+                      <apex:outputLabel ><b>Select Month</b></apex:outputLabel><br/>              
+                        <apex:selectlist value="{!mon}" multiselect="false" size="1" id="topoprmonth" styleClass="select-box" onchange="getDataFunction('topOpportunity');"> 
+                          <apex:selectoptions value="{!month}"/>                             
+                        </apex:selectlist>
+                     </apex:outputPanel>
+                   
+                </div>
+            </div>
+          <apex:outputPanel id="graphviewtwo">
+            <div class="graphContainer">
+               <canvas id="showTwelveTopOpportunity" height="125"></canvas>             
+           </div>
+         </apex:outputPanel>
+         </apex:pageBlock>
+         </apex:outputPanel>
+        </div>
+       </apex:outputPanel>
+    
+    </div> 
+
+<!--   Top Opportinities table End      -->           
+          
+<!--   Top Accounts table Start      --> 
+
+<div class="col-md-5 graph_div_height column-border" style="width: 49%;" onclick="divid(this);" id="topAccounts">
+      
+         <div id="top-accounts" >
+            <div class="row" >
+                <h2 class="title-header" >Top 10 Accounts</h2>
+            </div>
+      <apex:outputPanel id="topaccct">         
+        <apex:pageBlock id="topaccountt">
+            <div class="row dropDownRow">
+                <div class="col-md-5">
+                    <apex:outputLabel ><b>Confidence Level</b><apex:image url="{!$Resource.delphiDemo__Helpertextimghide}" width="25" height="16" id="MyImage2" onmouseover="ImageOver(this)" onmouseout="ImageNormal(this)" title="This is the percentage by which the actual value will be similar to the expected value." /></apex:outputLabel><br/>
+                    <apex:selectList multiselect="false" size="1" value="{!confiltertwo}" styleClass="select-box"   >
+                        <apex:selectOptions value="{!confidenceintervel}" />
+                         <apex:actionSupport event="onchange" action="{!saveconfandmontwo}" oncomplete="topacont();" status="actStatusIdtopacc" >
+                           <apex:actionStatus id="actStatusIdtopacc"  >
+                               <apex:facet name="start" >
+                                  <apex:image url="{!$Resource.delphiDemo__loadingimg}" styleClass="popup" />                    
+                               </apex:facet>
+                             </apex:actionStatus>
+                        </apex:actionSupport>
+                    </apex:selectlist>
+                </div>
+                <div class="col-md-4">
+                    <apex:outputLabel ><b>Time Period</b><apex:image url="{!$Resource.delphiDemo__Helpertextimghide}" width="25" height="16" id="MyImage3" onmouseover="ImageOver(this)" onmouseout="ImageNormal(this)" title="This is the duration for which the forecast is displayed." /></apex:outputLabel><br/>
+                    <apex:selectlist value="{!selectedoptnforacnt}" multiselect="false" size="1" id="topaccnt"  onchange="getDataFunction('topAccounts');" styleClass="select-box">
+                        <apex:selectoptions value="{!optionlist }" />
+                    </apex:selectlist>
+                </div>
+                  <div class="col-md-3 pull-right expbutt">
+                  <apex:commandbutton value="Export Data" styleClass="export-data-btn Exportbutton" action="{!exportTopAccounts}"/>
+                 </div>
+            </div>
+          <apex:outputPanel id="graphviewtwo">
+            <div class="graphContainer">
+               <canvas id="showTwelveTopacnt" height="270"></canvas>
+           </div>
+         </apex:outputPanel>
+         </apex:pageBlock>
+         </apex:outputPanel>
+        </div>
+       
+    
+    </div> 
+
+<!--   Top Accounts table End      -->   
+
+          
+<!--   Bottom Accounts table Start      --> 
+
+<div class="col-md-5 graph_div_height column-border" style="width: 49%; margin-left: 2%" onclick="divid(this);" id="bottomAccounts">
+   <apex:outputPanel id="bottomAccountId">
+         <div id="top-accounts" >
+            <div class="row" >
+                <h2 class="title-header" >Bottom 10 Accounts</h2>
+            </div>
+                 
+        <apex:pageBlock id="topaccountt1">
+            <div class="row dropDownRow">
+                <div class="col-md-5">
+                    <apex:outputLabel ><b>Confidence Level</b><apex:image url="{!$Resource.delphiDemo__Helpertextimghide}" width="25" height="16" id="MyImage4" onmouseover="ImageOver(this)" onmouseout="ImageNormal(this)" title="This is the percentage by which the actual value will be similar to the expected value." /></apex:outputLabel><br/>
+                    <apex:selectlist multiselect="false" size="1" value="{!confilterthree}" styleClass="select-box">
+                        <apex:selectOptions value="{!confidenceintervel}"/>
+                         <apex:actionSupport event="onchange" action="{!saveconfandmonthree}" oncomplete="bottomaccount();" status="actStatusIdtopacc">
+                           <apex:actionStatus id="actStatusIdtopacc"  >
+                               <apex:facet name="start" >
+                                  <apex:image url="{!$Resource.delphiDemo__loadingimg}" styleClass="popup" />                    
+                               </apex:facet>
+                             </apex:actionStatus>
+                        </apex:actionSupport>
+                    </apex:selectlist>
+                </div>
+                <div class="col-md-4">
+                    <apex:outputLabel ><b>Time Period</b><apex:image url="{!$Resource.delphiDemo__Helpertextimghide}" width="25" height="16" id="MyImage5" onmouseover="ImageOver(this)" onmouseout="ImageNormal(this)" title="This is the duration for which the forecast is displayed." /></apex:outputLabel><br/>
+                    <apex:selectlist value="{!selectedoptnforBottomAcnt}" multiselect="false" size="1" id="btmacnt"  onchange="getDataFunction('bottomAccounts');" styleClass="select-box">
+                        <apex:selectoptions value="{!optionlist }" />
+                    </apex:selectlist>
+                </div>
+                  <div class="col-md-3 pull-right expbutt">
+                  <apex:commandbutton value="Export Data" styleClass="export-data-btn Exportbutton" action="{!exportBottomAccounts}"/>
+                 </div>
+            </div>
+          <apex:outputPanel id="graphviewthree">
+          
+            <div class="graphContainer">
+               <canvas id="showTwelveBottomAcnt" height="270"></canvas>
+           </div>
+         </apex:outputPanel>
+         
+         <apex:outputPanel id="refresheeId">
+          
+           <script>
+           var check ='{!refreshCheck}';
+           
+           
+           if(check=='true')
+           {
+            window.location.reload();
+           }
+           </script>
+           
+         </apex:outputPanel>
+         </apex:pageBlock>
+        </div>
+       </apex:outputPanel>
+    
+    </div> 
+
+<!--   Bottom Accounts table End   -->  
+
+
+<!-- Top Performers Table Start    -->
+
+    <div class="col-md-5 graph_div_height column-border" style="width: 49%;" onclick="divid(this);" id="topPerformers">
+       <apex:outputPanel id="topPerformerId">
+        <div id="top-performer" >
+            <div class="row" >
+                <h2 class="title-header" >Top 10 Performers</h2>
+            </div>
+             
+            <div class="row dropDownRow">
+                <div class="col-md-5">
+                   <apex:outputLabel ><b>Confidence Level</b><apex:image url="{!$Resource.delphiDemo__Helpertextimghide}" width="25" height="16" id="MyImage6" onmouseover="ImageOver(this)" onmouseout="ImageNormal(this)" title="This is the percentage by which the actual value will be similar to the expected value." /></apex:outputLabel><br/>
+                    <apex:selectlist multiselect="false" size="1" value="{!confilterfour}" styleClass="select-box">
+                        <apex:selectOptions value="{!confidenceintervel}"/>
+                         <apex:actionSupport event="onchange" action="{!saveconfandmonfour}" oncomplete="topPerformer();" status="actStatusIdtopper">
+                            <apex:actionStatus id="actStatusIdtopper"  >
+                               <apex:facet name="start" >
+                                  <apex:image url="{!$Resource.delphiDemo__loadingimg}" styleClass="popup" />                    
+                               </apex:facet>
+                             </apex:actionStatus>
+                         </apex:actionSupport>
+                    </apex:selectlist>
+                </div>
+                <div class="col-md-4">
+                    <apex:outputLabel ><b>Time Period</b><apex:image url="{!$Resource.delphiDemo__Helpertextimghide}" width="25" height="16" id="MyImage7" onmouseover="ImageOver(this)" onmouseout="ImageNormal(this)" title="This is the duration for which the forecast is displayed." /></apex:outputLabel><br/>
+                    <apex:selectlist value="{!selectedoptnforTopPerformer}" multiselect="false" size="1" id="topperf" onchange="getDataFunction('topPerformers');" styleClass="select-box">
+                        <apex:selectoptions value="{!optionlist}"/>
+                   </apex:selectlist>
+                </div>
+               <div class="col-md-3 pull-right expbutt">
+                   <apex:commandbutton value="Export Data " styleClass="export-data-btn Exportbutton" action="{!exportTopPerformer}" />
+                 </div>
+            </div>
+            
+            <div class="graphContainer">   
+                <canvas id="showTwelveTopPerformer" height="280"></canvas>          
+            </div>
+    
+        </div>
+        </apex:outputPanel>
+    
+    </div> 
+
+<!-- Top Performers Table End -->
+</div> 
+
+<div class="popup_block" id="toPopuprev" >   
+    <div class="popupHeaderTitle"><a href="#" onclick="hide('toPopuprev');" title="Close" style="padding-right:5px; color:#ffffff; text-decoration:none;  display: inline-block; text-align: right;width: 100%;"><h1 >X</h1></a></div>
+        <div class="mt-right-side-box" style='height:500px; overflow-y:scroll; border-bottom-radius:10px;' >                  
+          <apex:pageblock id="poprev">
+            <apex:pageblockTable value="{!lstWrapper}" var="opp" id="actble1">                
+                <apex:column headerValue="Opportunity Name" value="{!opp.objOpportunity.name}"/> 
+                <apex:column headerValue=" Current Stage" value="{!opp.objOpportunity.stagename}"/>                               
+                <apex:column headerValue="Owner Name" value="{!opp.objOpportunity.owner.name}"/> 
+                <apex:column headerValue="Expected Revenue" value="{!opp.expectedAmount}"/>                    
+            </apex:pageblockTable> 
+         </apex:pageblock>
+     </div>
+</div>   
+  <apex:outputpanel >
+        <apex:actionPoller action="{!checkNewValues}"  interval="10" reRender="refresheeId"/>
+    </apex:outputpanel>  
+    
+                        
+ </apex:form> 
+ <div id="expiryform" class="expiry-frm">
+    <a href="/home/home.jsp" class="home-btn"><img src="{!$Resource.home_icon}" style="width: 30px; height: 28px; margin-left: 5px;"/></a>
+    <h3 style="color: red; font-size: 29px; margin-left: 141px;">Your 30-day trial has expired. Please contact us for package renewal.</h3>
+    <img src="{!$Resource.caution}" style="width:293px; margin-left:500px; margin-top:90px;"/>
+</div>
+</apex:page>

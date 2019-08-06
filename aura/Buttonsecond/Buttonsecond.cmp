@@ -1,0 +1,47 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	     <aura:attribute name="disabled" type="Boolean" default="false" />
+    <aura:attribute name="saved" type="Boolean" default="false" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="msg" type="Boolean" default="false" />
+      
+    <!--aura:attribute name="childAttribute" type="Lead[]"/-->
+      
+    <aura:attribute name="data" type="Lead[]"/>
+    <aura:attribute name="columns" type="List"/>
+      <lightning:button
+            class="btn-color slds-float_none"
+                         label="Create Lead" 
+                         onclick="{!c.openform}" />
+    
+    <aura:if isTrue="{!v.saved}">
+        <lightning:buttonIcon class="slds-float_right" iconName="utility:up"  size="small" alternativeText="View More" onclick ="{!c.Arrow}" />
+        <div aura:id="editformid" class="slds-show">
+        <lightning:recordEditForm 
+ 			onsubmit="{!c.handleSubmit}"
+            onsuccess="{!c.handleSuccess}"
+            objectApiName="Lead">
+         
+            <lightning:inputField fieldName="Name" />
+            <lightning:inputField fieldName="Company" />
+            <lightning:inputField fieldName="Status" />
+            <lightning:inputField fieldName="Phone" />
+            <lightning:inputField fieldName="Email" />
+            
+            <div class="slds-m-top_medium">
+                <lightning:button disabled="{!v.disabled}" variant="brand" type="submit" name="save" label="Save"/>
+            </div>
+        </lightning:recordEditForm>
+        </div>
+         <!--aura:if isTrue="{!v.msg}">        
+        
+        <lightning:datatable data="{! v.data }"
+                             columns="{! v.columns}"
+                             keyField="Id"
+                             selectedRows="{!v.selectedRows}"
+                             onrowselection="{!c.UpdateSelectedRows}"                   
+                             hideCheckboxColumn="true"/>
+             
+    </aura:if-->   
+    </aura:if>
+   
+</aura:component>

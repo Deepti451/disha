@@ -1,0 +1,86 @@
+<apex:page controller="delphiDemo.DelphiUserTab" sidebar="false" showHeader="true" >
+<style>
+.labell {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: small;
+}
+.step-col-width{
+   width: 29.4%!important;
+}
+.homebutton{
+    float: right;
+    margin-right: 35px;
+    z-index: 9999;
+    position: fixed;
+    font-size: 11px;
+    font-weight: 400;
+    right: 0%;
+    top: 85px;
+    padding: 0
+    }
+</style>
+<script>
+    window.onload = function(){
+     //alert('ssssssssssssss');
+     var ckbx = '{!configInstr[0].Visible_Page__c}';
+     //alert('ckbx:::::'+ ckbx ); 
+     if(ckbx=='true'){  
+     //alert('true'); 
+    tgetusers();
+     }
+     
+     };
+</script>
+<apex:form >
+
+ <apex:actionFunction action="{!backtohome}" name="backtohome" />
+ <apex:stylesheet value="{!URLFOR($Resource.delphiDemo__css_folder,'css/custom.css')}"/>
+ <apex:stylesheet value="{!URLFOR($Resource.delphiDemo__css_folder,'css/bootstrap.css')}"/>
+ <apex:actionFunction action="{!tgetUser}" name="tgetusers" />
+
+    <apex:outputPanel rendered="{!configInstr[0].Visible_Page__c==false}">    
+   
+        <div class="innerContainer" style = "width : 90%">
+          <div class="sm-logo"><apex:image url="{!$Resource.delphiDemo__delphilogo}" />
+          <div class="homebutton">
+                <!--<a href="#" onclick="backtohome();"><apex:image url="{!URLFOR($Resource.Home)}" title="Back to Home" style="width:30px;"/> </a>      -->        
+            </div>    
+          </div>
+          
+            <h1>Accurate Sales Forecasting &amp; Predictive Analytics</h1>
+            <h4>Delphi intuitively uses complex simulations to analyze and predict when an opportunity in your pipeline will convert into an order, 
+            to forecast value of your Opportunities, Accounts and Sales Reps. You can choose a confidence level for a specific time period to forecast the expected closure time and expected revenue.</h4>
+            <h1 style="margin-top:20px">How to use</h1>
+            
+            
+            <div class="container steps" style="width: 100%;padding-bottom: 3%; margin-top:0px">
+            <div class="col-md-3 step-container step-col-width">
+                 <span class="step-title">Step 1</span>
+                 <p class="step-text">Select the confidence level from the "Confidence Level" drop down.</p>
+            </div>
+            <div class="col-md-3 step-container step-col-width">
+                <span class="step-title">Step 2</span>
+                <p class="step-text">Select the particular time period from the “Time Period” drop down.</p>
+            </div>
+            <div class="col-md-3 step-container step-col-width">
+                <span class="step-title">Step 3</span>
+                <p class="step-text">Export the data based on your preference of “Confidence Level” and “Time Period”.</p>
+                        </div>
+                </div>                   
+                
+                <div class="row clear-bottom buttonnew">
+                    <div class="col-md-3" style="margin-top: 1%;">
+                        <apex:inputcheckbox value="{!chkbox}" />
+                        <apex:outputLabel styleClass="labell">Do not show this message again.</apex:outputLabel>
+                    </div>
+                    <div class="col-md-2 col-md-offset-2">
+                    <apex:commandButton value="Get Started" styleClass="btn-primary btn-lg btn" style="width: 195px;" action="{!tgetUser}"/>
+                    </div>
+                </div>       
+         </div>
+    </apex:outputPanel>
+    </apex:form> 
+</apex:page>

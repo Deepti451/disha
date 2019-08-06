@@ -1,0 +1,19 @@
+<aura:component controller="AccountController">
+     
+    <aura:attribute type="Account[]" name="acctList"/>
+    <aura:attribute name="mycolumns" type="List"/>
+    <aura:attribute name="istrue" type="boolean"/>
+     <lightning:button variant="base" label="Base" title="Base action" onclick="{! c.handleClick }"/>
+     
+    <aura:handler name="init" value="{!this}" action="{!c.fetchAcc}"/>
+     <aura:if isTrue="{!v.istrue}">
+    <lightning:datatable data="{! v.accList }"
+                         columns="{! v.mycolumns }"
+                         keyField="id"
+                         hideCheckboxColumn="true"/>
+    </aura:if>
+    
+   
+
+     
+</aura:component>

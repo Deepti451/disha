@@ -1,0 +1,109 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	
+        <aura:handler event="force:refreshView" action="{!c.isRefreshed}" />
+    
+    
+    <lightning:recordEditForm aura:id="AcccountForm" objectApiName="Account" onsuccess="{!c.handleOnSuccess}" recordId="{!v.recordID}">
+                
+
+                <lightning:messages />
+                
+                <div class="slds-grid">
+                	<div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                    	<lightning:inputField fieldName="Name"></lightning:inputField>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                    	<lightning:inputField fieldName="CurrencyIsoCode"></lightning:inputField>
+                    </div>
+                </div>
+                 
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                        <lightning:inputField fieldName="Newsletter_Marketing_Options__c"></lightning:inputField>
+                    </div>
+                    
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                        <lightning:inputField fieldName="Collateral_we_send_to_client__c"></lightning:inputField>
+                    </div>
+                    
+                </div>
+                 
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                        <lightning:inputField fieldName="Benefits_Vendor_Show__c"></lightning:inputField>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                        <lightning:inputField fieldName="CTA_for_collateral__c"></lightning:inputField>
+                    </div>
+                </div>
+                 
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                        <lightning:inputField fieldName="Employee_Information_Board__c"></lightning:inputField>
+                    </div>
+                    
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                        <lightning:inputField fieldName="Brochures_quantity__c"></lightning:inputField>
+                    </div>
+                </div>
+                
+                <div class="slds-grid">
+                	<div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                    	<lightning:inputField fieldName="Giveaway_Table__c"></lightning:inputField>
+                    </div>
+                    
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                        <lightning:inputField fieldName="Posters__c"></lightning:inputField>                
+                    </div>
+                </div>
+                
+                <div class="slds-grid">
+                	<div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                    	<lightning:inputField fieldName="Additional_Ways_Account_Advertises_Rates__c"></lightning:inputField>
+                    </div>
+                    
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                    	<lightning:inputField fieldName="Triangle_Tents_quantity__c"></lightning:inputField>
+                    </div>
+                </div>
+                
+                <div class="slds-grid">
+                	<div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                    	<lightning:inputField fieldName="Timing_of_Brochure_Print_1__c"></lightning:inputField>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                        <lightning:inputField fieldName="Mouse_Pads_quantity__c"></lightning:inputField>
+                    </div>
+                </div>
+                
+                <div class="slds-grid">
+                	<div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                    	<lightning:inputField fieldName="Timing_of_Brochure_Print_2__c"></lightning:inputField>
+                    </div>
+                    
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                    	<lightning:inputField fieldName="Give_Aways_quantity__c"></lightning:inputField>
+                    </div>
+                </div>
+                
+                <div class="slds-grid">
+                	<div class="slds-col slds_size_1-of-2 slds-p-around_medium">
+                    	<lightning:inputField fieldName="Frequency_of_Magazine__c"></lightning:inputField>
+                    </div>
+                    
+                    <div class="slds-col slds_size_1-of-2 slds-p-around_medium">
+                    	<lightning:inputField fieldName="Collateral_Choices__c"></lightning:inputField>
+                    </div>
+                </div>
+                
+                <div class="slds-grid">
+                	<div class="slds-col slds_size_1-of-2 slds-p-around-medium">
+                    	<lightning:inputField fieldName="Notes__c"></lightning:inputField>
+                    </div>
+                </div>
+                 
+                <lightning:button type="submit" label="Save" variant="brand"/>
+
+            </lightning:recordEditForm>
+    
+</aura:component>

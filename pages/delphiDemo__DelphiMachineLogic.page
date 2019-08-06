@@ -1,0 +1,289 @@
+<apex:page id="mainpage" controller="delphiDemo.DelphiTableController" docType="html-5.0" sidebar="false" standardStylesheets="false"  cache="true" showHeader="false" >
+<style>
+    /* This is for the full screen DIV */
+    .popupBackground {
+        /* Background color */
+        background-color:black;
+        opacity: 0.20;
+        filter: alpha(opacity = 20);
+    
+        /* Dimensions */
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 998;
+        position: absolute;
+        
+        /* Mouse */
+        cursor:wait;
+    }
+ 
+    /* This is for the message DIV */
+    .PopupPanel {
+        /* Background color */
+        border: solid 2px blue;
+        background-color: white;
+ 
+        /* Dimensions */
+        left: 50%;
+        width: 200px;
+        margin-left: -100px;
+        top: 50%;
+        height: 50px;
+        margin-top: -25px;
+        z-index: 999;
+        position: fixed;
+        
+        /* Mouse */
+        cursor:pointer;
+    }
+.popup {
+
+    z-index: 99999;
+    padding: 10px;
+    position: absolute;
+    width: Auto;
+    top: 50%;
+    opacity: 1;
+    left: 48%;
+    right: 48%;
+    width: 192px;
+    display: table-cell;
+    vertical-align: middle;
+    color: #000;
+    font-size: 18px;
+    }
+ 
+.popupBg {
+    background-color: #e8e8e8;
+    opacity: 0.8;
+    filter: alpha(opacity = 10);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+    overflow: hidden;
+}
+
+.homebutton{
+    float: right;
+    margin-right: 35px;
+    z-index: 9999;
+    position: fixed;
+    font-size: 11px;
+    font-weight: 400;
+    padding: 0
+    }
+</style>
+
+<style>
+.punch-line{
+    font-size: 20px;
+    
+    font-weight: lighter;
+    font-family: "open sans";
+    margin-bottom: 2%;
+    margin-top: 3%;
+  }
+.help-text{
+    display: inline-block;
+    padding: 5px;
+    border-radius: 200px;
+    background: #ffffff;
+    color: #F44336;
+    font-size: 12px;
+    height:18px;
+    width: 18px;
+    line-height: 1;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .table-heading{
+    font-size: 16px;
+    font-weight: lighter;
+    display: inline-block;
+    padding: 2%;
+    color: #fff;
+    font-family: "Open Sans";
+  }
+  .row .action-button, .row .action-button-cancel{
+    background: #00BCD4;
+    min-width: 94px;
+    border: none;
+    padding: 1%;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: "Open Sans";
+  }
+  .row .action-button-cancel{
+    background: #909090;
+    margin-left: 10px;
+  }
+  
+  #mask {
+    display: none;
+    background: rgba(0, 0, 0, 0.5) none repeat scroll 0 0;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+    z-index: 999;
+}
+/* You can customize to your needs  */
+.login-popup {
+    display: block;
+    background: #fff;
+    padding: 28px;
+    font-size: 1.2em;
+    position: relative;
+    z-index: 99999;
+    border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border: solid 1px #ece8e8;
+    width: 400px;
+    margin: 0 auto;
+}
+fieldset {
+    border: none;
+}
+.settings .textbox label {
+    display: block;
+    padding-bottom: 7px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 2;
+    color:#555555;
+}
+.settings .textbox p {
+    font-size: 14px;
+    color: #555555;
+    margin: 5px 0;
+}
+.settings .textbox input {
+    background: #666666;
+    border-bottom: 1px solid #333;
+    border-left: 1px solid #000;
+    border-right: 1px solid #333;
+    border-top: 1px solid #000;
+    color: #fff;
+    border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    padding: 6px 6px 4px;
+    width: 200px;
+}
+.button {
+    margin-top: 10px;
+    font-size: 12px;
+    width: 100%;
+    background: #888888 none repeat scroll 0 0;
+    border-radius: 5px;
+    color: #ffffff;
+    display: inline-block;
+    margin: 0 auto;
+    padding: 5px 15px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.button:hover {
+    background: #999;
+}
+.settings p::after {
+    color: #dd0000;
+    content: "X";
+    cursor: pointer;
+    float: right;
+}
+.selectListClass{
+    font-size: 16px;
+    padding: 9px;
+    border-radius: 5px;
+    display: block;
+    width: 100%;
+}
+</style>
+<apex:actionStatus id="statusSaveTrip" stopText="">
+    <apex:facet name="start">
+        <div>
+            <div class="popupBackground" />
+            <div class="PopupPanel">
+                <table border="0" width="100%" height="100%">
+                    <tr>
+                        <td align="center"><b>Please Wait</b></td>
+                    </tr>
+                    <tr>
+                        <td align="center"><img src="{!$Resource.delphiDemo__loadingimg}"/></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </apex:facet>
+</apex:actionStatus>
+    <apex:form id="theform" >
+    <apex:actionFunction action="{!backtohome}" name="backtohome" />
+    <apex:outputpanel rendered="{!showActionPollar}">
+        <apex:actionPoller action="{!saveSetting}"  interval="5" reRender="theform" />
+    </apex:outputpanel>
+        <apex:stylesheet value="{!URLFOR($Resource.delphiDemo__css_folder,'/css/custom.css')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.delphiDemo__css_folder,'/css/bootstrap.css')}"/>
+        <apex:includeScript value="{!$Resource.delphiDemo__Jquery}"  />
+    
+      
+        <div class="background">        
+            <div class="container" style="margin-top:3%;position:relative;">
+            <div class="homebutton">
+                <a href="#" onclick="backtohome();"><apex:image url="{!URLFOR($Resource.delphiDemo__Image_folder, 'delphi__Image_folder/images/delphiDemo__Home.png')}" styleclass="img-responsive" alt="Delphi" /> </a>   
+                        
+            </div>            
+                <div class= "row">                 
+                    <div class="col-md-12 punch-line">
+                        Configure the time period for which the data needs to analyzed’. Machine learning works only if the number of closed won Opportunities in your Salesforce Org. is greater than 200.
+                        
+                    </div>
+                     <apex:pageMessages id="msg"/>
+                 </div>
+                    <apex:actionStatus id="actStatusId" >
+                        <apex:facet name="start" >
+                            <apex:image url="{!$Resource.delphiDemo__loadingimg}" styleClass="popup" style="width:80px !important;height:80px !important" />      
+                        </apex:facet>
+                    </apex:actionStatus>                 
+                 
+                    <div id="login-box" class="login-popup">
+                      <form method="post" class="settings" action="#">
+                            <fieldset class="textbox">
+                             <label>
+                            <strong>Select Time Period</strong>
+                            </label>
+                           <apex:selectList styleClass="selectListClass" value="{!selectedVal}" size="1"> 
+                        <apex:selectOptions value="{!backWardList}" /> 
+                    </apex:selectList>
+                    
+                    <apex:commandButton action="{!updateDates}" styleClass="submit button" value="Submit" id="theButton" />
+                            </fieldset>
+                      </form>
+                    </div>               
+                </div>         
+        </div>
+   <script>    
+  
+    </script>
+   
+    <script type="text/javascript">
+       
+        
+    </script>
+    
+ 
+    </apex:form>
+  
+</apex:page>

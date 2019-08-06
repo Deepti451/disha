@@ -1,0 +1,36 @@
+<aura:component controller="Lead_Account_Table_Apex">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.cinit}"/>
+    <aura:attribute name="data" type="List"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="columns2" type="List"/>
+    <aura:attribute name="data2" type="List"/>
+   
+    
+    <aura:attribute name="data3" type="List"/>
+    <aura:attribute name="columns3" type="List"/>
+    <lightning:datatable data="{!v.data}" columns="{!v.columns}" keyField="Id"/>
+                         
+                                            
+                                    
+    
+    <br/>
+   
+    
+    
+    <lightning:datatable data="{!v.data2}" columns="{!v.columns2}" keyField="Id"/>
+    
+   
+    <br/><br/>
+    <br/>
+    
+    
+    <lightning:datatable data="{!v.data3}" columns="{!v.columns3}" keyField="Id"/>
+    
+    
+                         
+                         
+                         
+                         
+                         
+                         </aura:component>

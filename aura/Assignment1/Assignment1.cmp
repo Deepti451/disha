@@ -1,0 +1,13 @@
+<aura:component controller="LeadClass" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<aura:attribute name="data" type="Lead[]"/>
+    <aura:attribute name="columns" type="List"/>
+      <aura:handler name="init" value="{!this}" action="{!c.cinit}"/>
+                <lightning:datatable data="{! v.data }"
+                                     columns="{! v.columns}"
+                                     keyField="Id"
+                                     selectedRows="{!v.selectedRows}"
+                                     onrowselection="{!c.UpdateSelectedRows}"                   
+                                     hideCheckboxColumn="true"/>              
+     
+        
+</aura:component>

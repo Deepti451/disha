@@ -1,0 +1,44 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <aura:attribute name="buttonLabel" type="String" default="Search"/>
+    <aura:attribute name="newLabel" type="String" default="new"/>
+    <aura:attribute name="isnewAvailable" type="boolean" default="false"/>
+    <aura:attribute name="carType" type="String[]"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}"/>
+   <!--- <aura:handler name="render" value="{!this}" action="{!c.handlerender}"/> -->
+    
+    <lightning:layout horizontalAlign="Center">
+    <lightning:layoutItem>
+        <lightning:select name='Select item' aura:id="carTypeList" label="All Types" value="" onchange="{!c.newValueSelected}">
+       
+            <option value=" " text="All Types"/> 
+            	<!--- <option value=" " text="Sports car"/> 
+            <option value=" " text="Luxury car"/>  -->
+         <aura:iteration items="{!v.carType}" var="carType">`
+             <option value="{!carType}" text="{!carType}"/>
+    	</aura:iteration>
+        </lightning:select> 
+        
+    </lightning:layoutItem>
+    
+ 
+    
+    <lightning:layoutItem class="padding-btn">
+        <lightning:button onclick="{!c.onSearchClick}" variant="brand" label="{!v.buttonLabel}"/>
+        <lightning:button onclick="{!c.toggleButton}" variant="neutral" label="Togglebutton"/>
+        
+        
+   			 <aura:if isTrue="{!v.isnewAvailable}">
+    				
+                 <lightning:button label="{#v.newLabel}" variant="Neutral action"/>
+
+    			<aura:set attribute="else">
+      				New Button can't be added here.
+   				 </aura:set>
+ 			 </aura:if> 
+		
+
+                
+    </lightning:layoutItem>
+    </lightning:layout>
+</aura:component>
